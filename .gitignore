@@ -20,6 +20,10 @@ dist/
 .astro/
 .wrangler/
 
+# Generated copies of the canonical public/build-ledger.json (synced at build time)
+site/src/data/build-ledger.json
+site/public/build-ledger.json
+
 # Python
 __pycache__/
 *.py[cod]

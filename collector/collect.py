@@ -31,7 +31,7 @@ import yaml  # noqa: E402
 
 import contract  # noqa: E402
 import redaction  # noqa: E402
-from modules import artefacts, coauthorship, repos  # noqa: E402
+from modules import activity, artefacts, coauthorship, repos  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_DIR = Path(__file__).resolve().parent / "config"
@@ -164,7 +164,8 @@ def aggregate(rows: list[dict], descriptors: list[dict], redaction_cfg: dict) ->
 
 # --- assembly -----------------------------------------------------------------
 def assemble_document(repo_inputs: list[dict], *, exclusion_repo_tallies: dict,
-                      date_range: dict, generated_at: str, cfg: dict) -> dict:
+                      date_range: dict, generated_at: str, cfg: dict,
+                      activity: dict | None = None) -> dict:
     """Build the whole document in memory from already-tiered per-repo inputs (single source of
     truth for both the live run and the data-convergence seed)."""
     redaction_cfg = cfg.get("redaction", {})
@@ -203,6 +204,7 @@ def assemble_document(repo_inputs: list[dict], *, exclusion_repo_tallies: dict,
         "agentic_practice": contract.empty_agentic_practice(),
         "retrospective": contract.empty_retrospective(),
         "in_flight": contract.empty_in_flight(),
+        "activity": activity or contract.empty_activity(),
         "exclusions": excl,
     }
     return doc
@@ -244,6 +246,7 @@ def collect_live(cfg: dict) -> list[dict]:
 
     descriptors = repos.discover(cfg.get("identity", {}))
     repo_inputs: list[dict] = []
+    clone_paths: list[Path] = []
     forks = mirrors = 0
     for d in descriptors:
         if d.get("isFork"):
@@ -258,17 +261,19 @@ def collect_live(cfg: dict) -> list[dict]:
             m, sig, tallies = repos.metrics(clone, exclusions_cfg)
             co = coauthorship.compute(clone, ai_cfg)
             arts = artefacts.detect(clone, ai_cfg)
+            clone_paths.append(clone)
         else:  # degraded: no clone -> typed-empty (run continues, AD-3)
             m, sig, tallies = contract.empty_metrics(), contract.empty_signals(), {}
             co, arts = contract.empty_coauthorship(), contract.empty_artefacts()
         repo_inputs.append({"descriptor": d, "tiering": tiering, "metrics": m, "signals": sig,
                             "coauthorship": co, "ai_artefacts": arts, "exclusion_tallies": tallies})
-    return repo_inputs, {"forks": forks, "mirrors": mirrors}
+    return repo_inputs, {"forks": forks, "mirrors": mirrors}, clone_paths
 
 
 def main() -> None:
     cfg = load_config()
-    repo_inputs, repo_tallies = collect_live(cfg)
+    repo_inputs, repo_tallies, clone_paths = collect_live(cfg)
+    act = activity.compute(clone_paths, cfg.get("exclusions", {})) if clone_paths else contract.empty_activity()
     dates = []
     for ri in repo_inputs:
         for key in ("createdAt", "pushedAt"):
@@ -279,7 +284,7 @@ def main() -> None:
                   "latest_commit": max(dates) if dates else None}
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     doc = assemble_document(repo_inputs, exclusion_repo_tallies=repo_tallies,
-                            date_range=date_range, generated_at=generated_at, cfg=cfg)
+                            date_range=date_range, generated_at=generated_at, cfg=cfg, activity=act)
     publish(doc, OUT, cfg)
     a = doc["aggregates"]
     print(f"OK -> {OUT}")

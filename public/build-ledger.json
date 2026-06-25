@@ -1679,6 +1679,11 @@
     "todo_fixme": 0,
     "commit_trajectory": []
   },
+  "activity": {
+    "available": false,
+    "monthly": [],
+    "heatmap": []
+  },
   "exclusions": {
     "forks": 0,
     "vendored": 0,

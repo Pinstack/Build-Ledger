@@ -1,0 +1,64 @@
+---
+import type { Ledger } from '../lib/ledger';
+import { int, pct } from '../lib/format';
+const { ledger } = Astro.props as { ledger: Ledger };
+const co = ledger.aggregates.coauthorship;
+const arts = ledger.repositories.reduce(
+  (a, r) => {
+    a.wi += r.ai_artefacts.workflow_infrastructure;
+    a.da += r.ai_artefacts.delivery_artefacts;
+    a.qc += r.ai_artefacts.quality_controls;
+    return a;
+  },
+  { wi: 0, da: 0, qc: 0 },
+);
+const artTotal = arts.wi + arts.da + arts.qc;
+const reposWithArtefacts = ledger.repositories.filter(
+  (r) => r.ai_artefacts.workflow_infrastructure + r.ai_artefacts.delivery_artefacts + r.ai_artefacts.quality_controls > 0,
+).length;
+---
+<div class="hero">
+  <div class="hero-grid">
+    <div>
+      <p class="label">AI-co-authored commits · commit-level lower bound</p>
+      <div class="numeral xl">≥&thinsp;{pct(co.ai_coauthored_share)}</div>
+      <p class="sub">{int(co.ai_coauthored_commits)} of {int(co.total_commits)} commits carry a <code>Co-authored-by:</code> trailer naming an AI agent — read straight from git history.</p>
+      <span class="lower-bound">A floor, not a ceiling: trailer-only attribution misses AI code that was hand-committed. Line-level attribution is higher and is the next phase (v1.5).</span>
+
+      <details class="drill">
+        <summary>Reconcile it — per-author breakdown →</summary>
+        <table class="breakdown">
+          <thead><tr><th>Commit author</th><th class="n">Commits</th></tr></thead>
+          <tbody>
+            <tr><td>Human</td><td class="n">{int(co.human_commits)}</td></tr>
+            {co.agents.map((a) => (
+              <tr><td>{a.author} <span class="sub">· AI agent</span></td><td class="n">{int(a.commits)}</td></tr>
+            ))}
+            {co.excluded_bots.map((b) => (
+              <tr><td>{b.author} <span class="sub">· bot — excluded from the agent count</span></td><td class="n">{int(b.commits)}</td></tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr><td>Total commits</td><td class="n">{int(co.total_commits)}</td></tr>
+            <tr><td>AI-co-authored (trailer)</td><td class="n">{int(co.ai_coauthored_commits)} · {pct(co.ai_coauthored_share)}</td></tr>
+          </tfoot>
+        </table>
+        <p class="sub" style="margin-top:8px">The split is derived from source on every run, never hand-curated. Bot authors (e.g. dependabot) are counted but classified out of the agentic headline.</p>
+      </details>
+    </div>
+
+    <div>
+      <p class="label">AI-native artefacts · classified</p>
+      <div class="numeral lg">{int(artTotal)}</div>
+      <p class="sub">Across {int(reposWithArtefacts)} repositories — a system <em>around</em> the models, not prompt-theatre.</p>
+      <table class="breakdown" style="margin-top:12px">
+        <tbody>
+          <tr><td>Workflow infrastructure</td><td class="n">{int(arts.wi)}</td></tr>
+          <tr><td>Delivery artefacts</td><td class="n">{int(arts.da)}</td></tr>
+          <tr><td>Quality controls</td><td class="n">{int(arts.qc)}</td></tr>
+        </tbody>
+      </table>
+      <p class="sub" style="margin-top:8px">CLAUDE.md · AGENTS.md · .cursorrules · .claude/ · mcp — each detected file/dir counted once, into exactly one class.</p>
+    </div>
+  </div>
+</div>

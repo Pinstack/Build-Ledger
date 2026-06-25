@@ -1,0 +1,29 @@
+---
+import type { Ledger } from '../lib/ledger';
+import { int } from '../lib/format';
+const { ledger } = Astro.props as { ledger: Ledger };
+const ex = ledger.exclusions;
+const items = [
+  ['Forks', ex.forks], ['Mirrors', ex.mirrors], ['Vendored', ex.vendored],
+  ['Generated', ex.generated], ['Lockfiles', ex.lockfiles], ['Minified', ex.minified],
+  ['Bot commits', ex.bot_commits],
+] as const;
+---
+<div class="note" id="methodology">
+  <h3>Methodology</h3>
+  <p><b>Discovery.</b> Repositories accessible to the <code>Pinstack</code> identity are discovered via the GitHub CLI; forks and mirrors are excluded from the headline set. Every figure on this page is read from <code>build-ledger.json</code> — none is hand-entered.</p>
+  <p><b>Commits &amp; user-authored commits.</b> Commit counts come from <code>git</code> history. Author identity is read from the commit author field; commits authored by known AI agents (e.g. <code>cursor[bot]</code>) and by bots (e.g. <code>dependabot</code>) are distinguished from the human author. "User-authored" is the human-authored subset.</p>
+  <p><b>The hero figure is a lower bound.</b> The AI-co-authored share counts commits carrying a <code>Co-authored-by:</code> trailer that names an AI agent, over all commits. It is an explicit <em>floor</em>: trailer attribution is the weakest of four attribution layers and cannot see AI code that was hand-committed without a trailer. Line-level attribution (recoverable from local agent session logs, aggregate-only) is higher and is the next phase — this page never rounds the floor up to that story.</p>
+  <p><b>LOC.</b> Lines added/removed/net are computed from <code>git</code> over non-excluded paths; LOC is deliberately demoted below provenance and is never the first or largest figure.</p>
+  <p><b>AI-native artefacts.</b> Presence of <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>.cursorrules</code>, a <code>.claude/</code> directory, or <code>mcp</code>/<code>.mcp.json</code> is detected per repository and classified into exactly one of three classes (workflow-infrastructure / delivery-artefacts / quality-controls).</p>
+  <p><b>Redaction (safe-by-default).</b> Every private repository renders as a Silhouette — shape and signals only, no name, path, branch, commit message, or client name. A single whole-document assertion runs over the entire public file before publish; a run that cannot assert clean does not publish (fail-closed). The Allowlist is the only promotion path and ships empty, so every private repository is a Silhouette.</p>
+  <p><b>Measured vs inferred.</b> Commit counts, co-authorship, LOC, signal presence and artefact counts are <em>measured</em> facts from source. Where a figure is unavailable in a run it is shown as such, never estimated.</p>
+
+  <h3 id="excluded">Excluded from counts</h3>
+  <p class="sub">Itemised, with this run's actual counts — subtracting the obvious inflation before any figure.</p>
+  <div class="excluded-grid">
+    {items.map(([name, n]) => (
+      <span class="x">{name} <b>{int(n as number)}</b></span>
+    ))}
+  </div>
+</div>

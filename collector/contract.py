@@ -65,6 +65,12 @@ def empty_in_flight() -> dict:
             "todo_fixme": 0, "commit_trajectory": []}
 
 
+def empty_activity() -> dict:
+    # Aggregate activity-over-time (dates + counts only — no names/messages, Silhouette-safe).
+    # `available: false` until a run computes the series from source (AD-3).
+    return {"available": False, "monthly": [], "heatmap": []}
+
+
 def empty_exclusions() -> dict:
     return {"forks": 0, "vendored": 0, "generated": 0, "lockfiles": 0,
             "minified": 0, "bot_commits": 0, "mirrors": 0}
@@ -149,7 +155,7 @@ def validate(doc: dict) -> list[str]:
 
     # top-level keys
     for k in ("schema_version", "ledger_metadata", "repositories", "aggregates",
-              "agentic_practice", "retrospective", "in_flight", "exclusions"):
+              "agentic_practice", "retrospective", "in_flight", "activity", "exclusions"):
         _require(k in doc, f"missing top-level key: {k}", errors)
 
     sv = doc.get("schema_version")
@@ -222,6 +228,14 @@ def validate(doc: dict) -> list[str]:
         _require(isinstance(inf.get("commit_trajectory"), list), "in_flight.commit_trajectory must be a list", errors)
     else:
         errors.append("in_flight missing/invalid")
+
+    act = doc.get("activity")
+    if isinstance(act, dict):
+        _require(isinstance(act.get("available"), bool), "activity.available must be bool", errors)
+        _require(isinstance(act.get("monthly"), list), "activity.monthly must be a list", errors)
+        _require(isinstance(act.get("heatmap"), list), "activity.heatmap must be a list", errors)
+    else:
+        errors.append("activity missing/invalid")
 
     exc = doc.get("exclusions")
     if isinstance(exc, dict):

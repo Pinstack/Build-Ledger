@@ -75,6 +75,9 @@ def valid_doc():
                                                               "evidence_ref": "git"}]},
         "in_flight": {"available": True, "wip_branches": 1, "open_issues": 2, "draft_prs": 0,
                       "todo_fixme": 4, "commit_trajectory": [3, 5, 2]},
+        "activity": {"available": True,
+                     "monthly": [{"month": "2026-01", "commits": 10, "loc_net": 120}],
+                     "heatmap": [{"date": "2026-01-05", "commits": 3}]},
         "exclusions": {"forks": 0, "vendored": 1, "generated": 2, "lockfiles": 3,
                        "minified": 0, "bot_commits": 1, "mirrors": 0},
     }

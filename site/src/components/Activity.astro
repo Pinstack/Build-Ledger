@@ -1,0 +1,27 @@
+---
+import type { Ledger } from '../lib/ledger';
+import { barChart, heatmap } from '../lib/charts';
+const { ledger } = Astro.props as { ledger: Ledger };
+const a = ledger.activity;
+const heatSvg = a.available ? heatmap(a.heatmap, {}) : '';
+const commitsSvg = a.available ? barChart(a.monthly.map((m) => ({ label: m.month, value: m.commits })), { title: 'Commits per month' }) : '';
+const locSvg = a.available ? barChart(a.monthly.map((m) => ({ label: m.month, value: Math.max(0, m.loc_net) })), { title: 'Net LOC per month', accent: '#3f6f54' }) : '';
+---
+{a.available ? (
+  <>
+    <p class="label">Daily commit intensity</p>
+    <Fragment set:html={heatSvg} />
+    <div class="card-grid" style="margin-top:20px; grid-template-columns:1fr 1fr;">
+      <div><p class="label">Commits / month</p><Fragment set:html={commitsSvg} /></div>
+      <div><p class="label">Net LOC / month</p><Fragment set:html={locSvg} /></div>
+    </div>
+  </>
+) : (
+  <div class="empty">
+    <p class="label">No per-period activity in this run</p>
+    The daily commit-intensity heatmap and the commits/month + net-LOC/month charts populate from
+    git on a full local collector run (the local-primary scan, AD-1). This published cut was
+    converged from the prior snapshot, which did not carry per-day series — so the charts render as
+    intentionally empty rather than fabricated.
+  </div>
+)}

@@ -69,8 +69,8 @@ v1 is fully planned (brief → PRD → architecture spine → SPEC → epics & s
 
 - **Epic 1 (redaction-safe evidence file) — done.** Versioned contract + validator, the central fail-closed whole-document redaction gate, the assembler (tiering → id-keyed merge → derived aggregates → atomic publish), and base repo metrics. 63 passing tests prove the safety-critical invariants over fixtures.
 - **Epic 2 (the hero) — done.** Commit-level Co-Authorship Split (named agents, bots distinguished, share stated as an explicit lower bound) and three-class AI-Native Artefact classification.
-- **Epic 3 (the published page) — next.** The Astro `/engineering` page rendered from the file.
-- **Epic 4 (the Mirror) — pending.** `agentic_practice`, `retrospective.window_view`, and `in_flight` currently render as typed-empty (`available: false`) until their Modules land.
+- **Epic 3 (the published page) — done.** A build-time static Astro `/engineering` page rendered solely from the file: provenance-first hero with drill-to-evidence, Ledger Metadata + Methodology + Excluded-from-counts notes, server-generated inline-SVG charts, silhouette-safe repo table, a no-client-JS inspection gate, and `$0` pre-built deploy + weekly local schedule scripts. Build it with `cd site && npm install && npm run build`.
+- **Epic 4 (the Mirror) — next.** `agentic_practice`, `retrospective.window_view`, and `in_flight` currently render as typed-empty (`available: false`) until their Modules land.
 
 The Collector is *local-primary* (AD-1): the live scan of real repositories runs on the trusted local machine; the committed artifact above is the builder's real prior collection converged into the v1 contract through the same redaction-gated pipeline.
 

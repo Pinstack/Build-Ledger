@@ -1,0 +1,7 @@
+# Cloudflare Pages (free tier) — the recommended default host; seed/swappable (AD-12).
+# Deploy is PRE-BUILT: `wrangler pages deploy dist` ships the already-built static output, so there
+# is no host build step and no GitHub Actions ($0). Workers Static Assets is the go-forward target
+# (same wrangler, same $0) when Pages is migrated.
+name = "build-ledger"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-06-01"

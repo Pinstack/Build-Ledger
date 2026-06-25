@@ -35,23 +35,35 @@ repositories") is the trusted-local-machine step the code is built and tested fo
 - [x] **2.2** AI-Native Artefact detection + exactly-one-of-three classification
       (`modules/artefacts.py`).
 
-### Epic 3 — A published, inspectable page (the DM fast-track) ⏳ next
-- [ ] 3.1 Scaffold Astro 6 site; `/engineering` renders at build time from the file.
-- [ ] 3.2 Provenance-first layout + Ledger Metadata + audit notes.
-- [ ] 3.3 Visual craft — heatmap + commits/LOC bar charts as inline SVG; restrained aesthetic.
-- [ ] 3.4 Methodology + Excluded-from-counts content.
-- [ ] 3.5 Drill-to-evidence + survives skeptical inspection.
-- [ ] 3.6 Manual fast-track run + pre-built $0 deploy.
-- [ ] 3.7 Weekly local schedule.
+### Epic 3 — A published, inspectable page (the DM fast-track) ✅
+- [x] **3.1** Astro 6 site; `/engineering` renders at build time from the file — fully static
+      HTML/CSS/SVG, numbers in view-source, no charting lib, no client JS; refuses unsupported
+      MAJOR (`site/src/lib/ledger.ts`, `site/src/pages/engineering.astro`).
+- [x] **3.2** Provenance-first layout — hero leads with Co-Authorship Split + AI-Native Artefacts,
+      "not a productivity score" near the top, share as explicit lower bound; Ledger Metadata +
+      audit notes present (`components/Hero.astro`, `LedgerMeta.astro`).
+- [x] **3.3** Visual craft — restrained light theme, monospace caps labels, large numerals, muted
+      accent, card grid; commit heatmap + commits/month + net-LOC/month as server-generated inline
+      SVG (`lib/charts.ts`); no SAMPLE banner / trust badges; empty modules read as intentional. The
+      additive `activity` contract key + `modules/activity.py` supply the chart series (live run).
+- [x] **3.4** Methodology + Excluded-from-counts content with real per-run counts (`Methodology.astro`).
+- [x] **3.5** Drill-to-evidence (per-author breakdown reconciles to the headline) + survives
+      inspection (silhouettes only, no leak); post-build `verify-build.mjs` gate (FR-10).
+- [x] **3.6** Fast-track `scripts/run.sh` + pre-built `$0` `scripts/deploy.sh` (wrangler / Cloudflare
+      Pages, `site/wrangler.toml`).
+- [x] **3.7** Weekly local schedule — launchd plist + installer + `crontab.example`
+      (`scripts/schedule/`, `scripts/scheduled-run.sh`).
 
-### Epic 4 — The Mirror (honest self-insight signals) ⏳ pending
+### Epic 4 — The Mirror (honest self-insight signals) ⏳ next
 - [ ] 4.1 Agentic Practice & Efficiency from local logs (aggregate-only, auditable-cost-or-none).
 - [ ] 4.2 Two-framing Retrospective — Window publishes, Mirror to the drawer only.
 - [ ] 4.3 In-Flight from auditable live signals only.
 
 ## Verification snapshot (latest)
 
-- Collector test suite: **63 passing** (`unittest`, zero-dependency).
+- Collector test suite: **67 passing** (`unittest`, zero-dependency).
 - `public/build-ledger.json`: schema_version `1.0.0`, **valid + redaction-safe**.
+- Site: **builds static** (`npm run build`), 2 pages; post-build inspection gate passes (no client
+  JS, provenance hero + audit links present, `build-ledger.json` served beside the page).
 - Headline (commit-level lower bound): **61.4%** AI-co-authored (1277 / 2080 commits);
   47 repos (12 public + 35 silhouettes); 1,972 user-authored commits; 62 bot commits excluded.
