@@ -1,0 +1,2 @@
+# Collector runtime deps. Everything else is the Python 3.10+ standard library.
+PyYAML>=6.0

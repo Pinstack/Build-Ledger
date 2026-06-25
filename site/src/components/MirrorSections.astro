@@ -1,0 +1,58 @@
+---
+// The quieter Mirror sections. Until their Modules land (Epic 4), each renders as an intentional
+// "no data this run" state (AD-3), never as broken. When a Module reports available, real content
+// renders in its place.
+import type { Ledger } from '../lib/ledger';
+import { int, pct } from '../lib/format';
+const { ledger } = Astro.props as { ledger: Ledger };
+const ap = ledger.agentic_practice;
+const retro = ledger.retrospective;
+const inf = ledger.in_flight;
+const cost = (ap as any).cost ?? {};
+---
+<div class="card-grid" style="grid-template-columns:1fr;">
+  <!-- Agentic Practice & Efficiency -->
+  {ap.available ? (
+    <div class="card">
+      <p class="label">Agentic practice &amp; efficiency · efficiency-as-craft</p>
+      <p class="sub">
+        Cache-hit ratio {(ap as any).cache_hit_ratio != null ? pct((ap as any).cache_hit_ratio) : '—'}
+        {cost.available ? ` · cost ${cost.total} (${cost.pricing_source}, as of ${cost.as_of})` : ' · cost omitted (auditable-or-none)'}
+      </p>
+    </div>
+  ) : (
+    <div class="empty">
+      <p class="label">Agentic practice &amp; efficiency — no data this run</p>
+      Cadence, model mix, cache-hit ratio, and honest (auditable-or-omitted) cost are computed from
+      local agent logs on the trusted machine, aggregate-only — never transcripts.
+    </div>
+  )}
+
+  <!-- Retrospective (Window View only; the Mirror View is private, never published) -->
+  {retro.available && retro.window_view.length ? (
+    <div class="card">
+      <p class="label">Retrospective · window view</p>
+      <ul>{retro.window_view.map((w: any) => (<li>{w.claim ?? String(w)}</li>))}</ul>
+    </div>
+  ) : (
+    <div class="empty">
+      <p class="label">Retrospective — no data this run</p>
+      The curated Window View is sourced from BMAD memlogs + git; the brutally-honest Mirror View is
+      written only to the local private drawer and never appears here (no <code>mirror_view</code> key).
+    </div>
+  )}
+
+  <!-- In-Flight (auditable live signals only) -->
+  {inf.available ? (
+    <div class="card">
+      <p class="label">In-flight · live signals</p>
+      <p class="sub">{int(inf.wip_branches)} WIP branches · {int(inf.open_issues)} open issues · {int(inf.draft_prs)} draft PRs · {int(inf.todo_fixme)} TODO/FIXME</p>
+    </div>
+  ) : (
+    <div class="empty">
+      <p class="label">In-flight — no data this run</p>
+      WIP branches, open issues, draft PRs, in-code work-markers and commit trajectory — auditable
+      live signals only, never an aspirational roadmap.
+    </div>
+  )}
+</div>

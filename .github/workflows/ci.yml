@@ -1,0 +1,57 @@
+name: CI
+
+# Local-primary by design (AD-1): CI never runs the LIVE collector — it has no `gh`, no repo
+# clones, and no agent logs, so it cannot (and must not) scan the real repositories. It proves
+# the *committed* code and artifact instead:
+#   1. the zero-dependency collector test suite (fixtures + a synthetic-private-repo leak test), and
+#      a schema + fail-closed redaction check on the published public/build-ledger.json;
+#   2. the static site build + the no-client-JS / provenance-hero inspection gate.
+# The live scan stays on the trusted local machine (scripts/run.sh, weekly schedule).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  collector:
+    name: Collector — tests + schema/redaction
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the meta retrospective test reads this repo's REAL git history; a shallow PR-merge checkout has only the merge commit, which `git log --no-merges` drops
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # contract.py needs >=3.10
+      - name: Install runtime dep (PyYAML)
+        run: python -m pip install --disable-pip-version-check -r collector/requirements.txt
+      - name: Unit tests (81, zero-dependency)
+        working-directory: collector
+        run: python -m unittest discover -s tests -p 'test_*.py' -t .
+      - name: Validate published ledger (schema + fail-closed redaction)
+        run: python collector/validate.py public/build-ledger.json --redaction
+
+  site:
+    name: Site — static build + inspection gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc' # Astro 6 needs >=22.12
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Install
+        working-directory: site
+        run: npm ci
+      - name: Build + verify (sync-ledger -> astro build -> verify-build gate)
+        working-directory: site
+        run: npm run build

@@ -1,0 +1,91 @@
+---
+import '../styles/global.css';
+import { loadLedger, SUPPORTED_MAJOR } from '../lib/ledger';
+import LedgerMeta from '../components/LedgerMeta.astro';
+import Hero from '../components/Hero.astro';
+import ProofMetrics from '../components/ProofMetrics.astro';
+import Activity from '../components/Activity.astro';
+import RepoTable from '../components/RepoTable.astro';
+import Languages from '../components/Languages.astro';
+import MirrorSections from '../components/MirrorSections.astro';
+import Methodology from '../components/Methodology.astro';
+
+const res = loadLedger();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Build Ledger — Engineering</title>
+    <meta name="description" content="An auditable proof-of-work ledger for AI-native engineering — generated from real repositories, not hand-authored. A window for others, a mirror for the builder." />
+    <meta name="color-scheme" content="light" />
+  </head>
+  <body>
+    {res.ok ? (
+      <>
+        <header class="masthead">
+          <div class="wrap">
+            <h1>Build Ledger</h1>
+            <p class="tagline">A continuously-updated, inspectable record of <em>how</em> software gets built with AI agents — generated from real repositories, not hand-authored.</p>
+            <p class="framing"><b>This is not a productivity score.</b> It is an evidence ledger showing sustained, inspectable engineering activity across real repositories: code, tests, CI, migrations, documentation, and AI-native development artefacts.</p>
+            <LedgerMeta ledger={res.ledger} />
+          </div>
+        </header>
+
+        <main class="wrap">
+          <section>
+            <h2 class="section-title">Provenance · the hero</h2>
+            <Hero ledger={res.ledger} />
+          </section>
+
+          <section>
+            <h2 class="section-title">Proof metrics · volume is supporting cast</h2>
+            <ProofMetrics ledger={res.ledger} />
+          </section>
+
+          <section>
+            <h2 class="section-title">Activity over time</h2>
+            <Activity ledger={res.ledger} />
+          </section>
+
+          <section>
+            <h2 class="section-title">Repository ledger</h2>
+            <p class="section-note">Every headline figure above reconciles with the sum of these rows. Drill in: public repositories are named in full; private ones are Silhouettes.</p>
+            <RepoTable ledger={res.ledger} />
+          </section>
+
+          <section>
+            <h2 class="section-title">Languages</h2>
+            <Languages ledger={res.ledger} />
+          </section>
+
+          <section>
+            <h2 class="section-title">The mirror · self-insight signals</h2>
+            <MirrorSections ledger={res.ledger} />
+          </section>
+
+          <section style="border-bottom:none;">
+            <h2 class="section-title">Methodology &amp; exclusions</h2>
+            <Methodology ledger={res.ledger} />
+          </section>
+        </main>
+
+        <footer>
+          <div class="wrap">
+            The page renders solely from <a href={res.ledger.ledger_metadata.data_url}>build-ledger.json</a> (schema {res.ledger.ledger_metadata.schema_version}, collector v{res.ledger.ledger_metadata.collector_version}). Removing the collector does not change what this file can display. Every figure is inspectable, or it doesn&rsquo;t ship.
+          </div>
+        </footer>
+      </>
+    ) : (
+      <main class="wrap" style="padding-top:64px;">
+        <h1>Build Ledger</h1>
+        <div class="empty" style="margin-top:20px;">
+          <p class="label">Unsupported schema major</p>
+          This page renders schema MAJOR {SUPPORTED_MAJOR} only. The file declares version <b>{res.version}</b>.
+          Refusing to render rather than mis-render (AD-7).
+        </div>
+      </main>
+    )}
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "build-ledger-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static Generated Page for Build Ledger — renders /engineering at build time from build-ledger.json (AD-8).",
+  "scripts": {
+    "sync": "node scripts/sync-ledger.mjs",
+    "dev": "node scripts/sync-ledger.mjs && astro dev",
+    "build": "node scripts/sync-ledger.mjs && astro build",
+    "postbuild": "node scripts/verify-build.mjs",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^6.4.8"
+  }
+}

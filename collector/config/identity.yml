@@ -1,0 +1,14 @@
+# Identity & publication target. Reviewable; carries NO secrets.
+# Auth to GitHub is the local `gh`/env token only — never stored here, never on a
+# third-party runner (AD-1, Safety constraint).
+
+subject:
+  name: Raedmund
+  github_identities: [Pinstack]
+
+route: "https://raedmund.com/engineering"   # the public Route (Glossary)
+data_url: "/build-ledger.json"               # the published file, served beside the page (AD-8)
+methodology_url: "/engineering#methodology"  # the Methodology Note anchor
+
+collector:
+  auth: gh-local                             # local gh/env token; resolved at run time, never persisted

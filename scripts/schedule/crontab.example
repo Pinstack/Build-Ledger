@@ -1,0 +1,3 @@
+# Weekly Build Ledger refresh — cron alternative to launchd (AD-1: trusted local machine only).
+# Mondays at 09:00 local time. Replace the path, then: crontab -e  (paste this line).
+0 9 * * 1 cd /ABSOLUTE/PATH/TO/Build-Ledger && ./scripts/scheduled-run.sh

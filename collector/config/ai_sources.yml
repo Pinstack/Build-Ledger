@@ -1,0 +1,53 @@
+# Local agent-log sources (AD-1, AD-9 aggregate-only) + the controlled vocabulary of known
+# AI-tool / bot identities + AI-Native Artefact -> Artefact Class classification (FR-4).
+
+# Local logs read for Agentic Practice (FR-5). Only session METADATA / aggregate counts are read;
+# transcript or session-log TEXT is NEVER read into the document or the page (AD-9).
+logs:
+  claude_code: "~/.claude/projects"
+  codex: "~/.codex"
+
+# Genuine AI agent author / co-author identities (controlled vocabulary). A commit authored by
+# one of these is an agent-authored commit; a Co-authored-by trailer naming one is AI-co-authored.
+agents:
+  - "cursor[bot]"
+  - "Cursor Agent"
+  - "claude"
+  - "Claude"
+  - "Claude Code"
+  - "anthropic"
+  - "copilot"
+  - "GitHub Copilot"
+  - "devin"
+  - "codex"
+  - "OpenAI"
+  - "aider"
+  - "cody"
+  - "sweep"
+
+# Bot identities — counted but classified OUT of the headline (FR-1, FR-3), surfaced as excluded_bots.
+bots:
+  - "dependabot"
+  - "dependabot[bot]"
+  - "renovate"
+  - "renovate[bot]"
+  - "github-actions"
+  - "github-actions[bot]"
+  - "greenkeeper"
+  - "snyk"
+  - "snyk-bot"
+  - "mergify"
+  - "semantic-release"
+  - "imgbot"
+
+# Each detected AI-Native Artefact is assigned to EXACTLY ONE of the three Artefact Classes (FR-4).
+artefact_classes:
+  workflow_infrastructure:        # MCP tooling, agent instruction files, model/orchestration config
+    files: ["CLAUDE.md", "AGENTS.md", "GEMINI.md", ".cursorrules", ".mcp.json", "mcp.json"]
+    dirs: [".claude", ".cursor", ".agents", ".github/agents"]
+  delivery_artefacts:             # implementation plans, session logs, task plans, PR reviews
+    files: ["PLAN.md", "TASKS.md"]
+    dirs: ["_bmad-output", ".bmad", "specs", "plans"]
+  quality_controls:               # eval tests, architecture guards, prompt regression, CI agent checks
+    files: ["ARCHITECTURE.md", ".github/workflows/eval.yml", ".github/workflows/evals.yml"]
+    dirs: ["evals", "eval", "prompt-tests", "prompt_regression"]

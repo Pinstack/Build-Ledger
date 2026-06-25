@@ -1,0 +1,14 @@
+---
+import type { Ledger } from '../lib/ledger';
+import { shortDate } from '../lib/format';
+const { ledger } = Astro.props as { ledger: Ledger };
+const m = ledger.ledger_metadata;
+---
+<div class="meta-bar">
+  <span><span class="k">generated</span> <span class="v">{shortDate(m.generated_at)}</span></span>
+  <span><span class="k">collector</span> <span class="v">v{m.collector_version}</span></span>
+  <span><span class="k">schema</span> <span class="v">{m.schema_version}</span></span>
+  <span><span class="k">identities</span> <span class="v">{m.identities_included.join(', ')}</span></span>
+  <span><span class="k">range</span> <span class="v">{shortDate(m.date_range.first_commit)} → {shortDate(m.date_range.latest_commit)}</span></span>
+  <span><span class="k">source</span> <a href={m.data_url}>build-ledger.json</a></span>
+</div>

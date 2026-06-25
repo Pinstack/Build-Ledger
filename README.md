@@ -24,7 +24,7 @@ A `SAFETY GATE` in [`collector/collect.py`](collector/collect.py) asserts that n
 
 ## Snapshot
 
-From [`public/build-ledger.json`](public/build-ledger.json) (generated 2026-06-24, collector `v0.2.0`):
+From [`public/build-ledger.json`](public/build-ledger.json) (`schema_version 1.0.0`, collector `v1.0.0`, data collected 2026-06-24):
 
 | | |
 |---|---|
@@ -39,25 +39,48 @@ From [`public/build-ledger.json`](public/build-ledger.json) (generated 2026-06-2
 ## Layout
 
 ```
-collector/collect.py     # the collector (v0.2.0 spike) — GitHub + local clones -> JSON
-public/build-ledger.json # the generated, redaction-safe public artifact
+collector/               # the local-primary Collector (v1) — discover -> redact -> emit
+  collect.py             #   assembler & entrypoint (tiering, id-keyed merge, atomic publish)
+  contract.py            #   the build-ledger.json contract: schema, enums, validator
+  redaction.py           #   central fail-closed whole-document redaction (SAFETY-CRITICAL)
+  modules/               #   one file per Module (repos, coauthorship, artefacts, …)
+  config/                #   reviewable YAML (identity, repos, redaction, exclusions, …)
+  tests/                 #   zero-dependency unittest suite (proves the invariants)
+public/build-ledger.json # the generated, redaction-safe public artifact (the one contract)
+site/                    # Astro 6 static page at /engineering, rendered from the file (Epic 3)
 _bmad-output/            # v1 planning: brief, PRD, architecture spine, SPEC, epics & stories
+BUILD-LOG.md             # autonomous build progress, story-by-story
 ```
 
 ## Running the collector
 
-Requires the [GitHub CLI](https://cli.github.com/) authenticated, and local clones under `~/Projects` for the commit-level signals:
+**Prerequisites:** Python **≥3.10** with `pip install -r collector/requirements.txt` (PyYAML); Node **≥22.12** for the site build (see [`.nvmrc`](.nvmrc) → `nvm use`); the [GitHub CLI](https://cli.github.com/) authenticated; and local clones under `~/Projects` for the commit-level signals.
 
 ```bash
-python3 collector/collect.py
-# -> writes public/build-ledger.json
+python3 collector/collect.py     # writes public/build-ledger.json
+```
+
+Or produce the whole publishable cut (collector → validate → static build) in one step. [`scripts/run.sh`](scripts/run.sh) **auto-selects** a compatible Python/Node, so the unattended weekly schedule never trips on a stale shell default (macOS ships Python 3.9; an old nvm default can be Node 20):
+
+```bash
+scripts/run.sh seed              # converge the committed snapshot (no clones/gh needed)
+scripts/run.sh live              # full recompute from source (trusted local machine)
 ```
 
 It reads the repo list via `gh`, computes co-authorship and signals from local clones where present, aggregates, runs the redaction safety gate, and writes the ledger.
 
 ## Status
 
-v1 is fully planned (brief → PRD → architecture spine → SPEC → epics & stories, all under `_bmad-output/`); the collector is an early spike. The `agentic_practice`, `retrospective`, and `in_flight` sections of the schema are stubbed for the next iteration.
+v1 is fully planned (brief → PRD → architecture spine → SPEC → epics & stories, all under `_bmad-output/`) and the build is underway, story-by-story (see [`BUILD-LOG.md`](BUILD-LOG.md)):
+
+- **Epic 1 (redaction-safe evidence file) — done.** Versioned contract + validator, the central fail-closed whole-document redaction gate, the assembler (tiering → id-keyed merge → derived aggregates → atomic publish), and base repo metrics. 63 passing tests prove the safety-critical invariants over fixtures.
+- **Epic 2 (the hero) — done.** Commit-level Co-Authorship Split (named agents, bots distinguished, share stated as an explicit lower bound) and three-class AI-Native Artefact classification.
+- **Epic 3 (the published page) — done.** A build-time static Astro `/engineering` page rendered solely from the file: provenance-first hero with drill-to-evidence, Ledger Metadata + Methodology + Excluded-from-counts notes, server-generated inline-SVG charts, silhouette-safe repo table, a no-client-JS inspection gate, and `$0` pre-built deploy + weekly local schedule scripts. Build it with `cd site && npm install && npm run build`.
+- **Epic 4 (the Mirror) — done.** Aggregate-only Agentic Practice & Efficiency (auditable-cost-or-none), the two-framing Retrospective (Window View publishes; brutally-honest Mirror View written only to the out-of-tree drawer — the public file has no `mirror_view` key), and In-Flight from auditable live signals. In the committed cut these render as typed-empty (`available: false`); a live local run populates them.
+
+All four epics are implemented; the collector suite is **81 passing** and the live entrypoint is verified end-to-end (schema-valid, redaction-safe, Mirror View confined to the drawer).
+
+The Collector is *local-primary* (AD-1): the live scan of real repositories runs on the trusted local machine; the committed artifact above is the builder's real prior collection converged into the v1 contract through the same redaction-gated pipeline.
 
 ---
 

@@ -1,0 +1,41 @@
+---
+import type { Ledger, Repo } from '../lib/ledger';
+import { int, pct, shortId } from '../lib/format';
+const { ledger } = Astro.props as { ledger: Ledger };
+const rows = [...ledger.repositories].sort((a, b) => b.metrics.commits - a.metrics.commits);
+const dot = (on: boolean) => (on ? '●' : '·');
+const artOf = (r: Repo) => r.ai_artefacts.workflow_infrastructure + r.ai_artefacts.delivery_artefacts + r.ai_artefacts.quality_controls;
+---
+<div class="table-scroll">
+  <table class="repos">
+    <thead>
+      <tr>
+        <th>Repository</th><th>Tier</th><th>Status</th><th class="n">Commits</th>
+        <th class="n">AI-co-auth</th><th>Tests</th><th>CI</th><th>Migr</th><th class="n">Artefacts</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => {
+        const isPublic = r.display_tier === 'public';
+        return (
+          <tr class={isPublic ? '' : 'silh'}>
+            <td>{isPublic ? r.label : <span class="silhouette-name">Private · {shortId(r.id)}</span>}</td>
+            <td><span class={`tier ${r.display_tier}`}>{r.display_tier === 'aggregate_only' ? 'silhouette' : r.display_tier}</span></td>
+            <td>{r.status}</td>
+            <td class="n">{int(r.metrics.commits)}</td>
+            <td class="n">{r.coauthorship.total_commits ? pct(r.coauthorship.ai_coauthored_share) : '—'}</td>
+            <td><span class={`dot ${r.signals.has_tests ? '' : 'off'}`}>{dot(r.signals.has_tests)}</span></td>
+            <td><span class={`dot ${r.signals.has_ci ? '' : 'off'}`}>{dot(r.signals.has_ci)}</span></td>
+            <td><span class={`dot ${r.signals.has_migrations ? '' : 'off'}`}>{dot(r.signals.has_migrations)}</span></td>
+            <td class="n">{artOf(r) || '—'}</td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
+<p class="sub" style="margin-top:10px">
+  Private repositories appear as Silhouettes — shape and signals only, no name, path, or message
+  ({int(ledger.aggregates.repo_counts.private)} of {int(ledger.repositories.length)} rows). Their
+  opaque id is a one-way hash that reveals nothing about the repository.
+</p>
