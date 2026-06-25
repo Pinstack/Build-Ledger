@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Ledger — Architecture</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#15181d; --muted:#6b7280; --faint:#9aa1ac;
+    --line:#e6e8ec; --accent:#3a5bd9; --accent-soft:#eef2fe; --good:#1f7a4d; --warn:#9a6b00;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:48px 28px 80px}
+  .label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  h1{font-size:30px;letter-spacing:-.02em;margin:.4em 0 .15em}
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);margin:54px 0 18px;font-weight:600;border-top:1px solid var(--line);padding-top:22px}
+  .lede{font-size:17px;color:#3a3f47;max-width:64ch;margin:.2em 0 0}
+  .meta{display:flex;flex-wrap:wrap;gap:0;margin:26px 0 0;border:1px solid var(--line);
+    border-radius:10px;background:var(--panel);overflow:hidden}
+  .meta div{padding:12px 16px;border-right:1px solid var(--line);flex:1 1 auto;min-width:120px}
+  .meta div:last-child{border-right:0}
+  .meta .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .meta .v{font-family:var(--mono);font-size:15px;color:var(--ink);margin-top:3px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin:14px 0}
+  .decisions{display:grid;gap:14px}
+  .d-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .d-num{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em}
+  .d-title{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .d-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}
+  @media(max-width:680px){.d-grid{grid-template-columns:1fr}}
+  .d-col .label{margin-bottom:5px;display:block}
+  .d-col p{margin:0;font-size:14.5px;color:#3a3f47}
+  .chose{background:var(--accent-soft);border:1px solid #d9e1fb;border-radius:8px;padding:11px 14px;margin-top:14px;font-size:14.5px}
+  .chose b{color:var(--accent)}
+  .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:680px){.ad-grid{grid-template-columns:1fr}}
+  .ad{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .ad .id{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em}
+  .ad .t{font-weight:600;font-size:14px;margin:2px 0 6px}
+  .ad .r{font-size:13px;color:var(--muted);line-height:1.45}
+  .stack{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{font-family:var(--mono);font-size:12px;background:var(--panel);border:1px solid var(--line);
+    border-radius:999px;padding:5px 12px;color:#33373e}
+  .pill b{color:var(--accent);font-weight:600}
+  .callout{border-left:3px solid var(--good);background:#f1f8f3;border-radius:0 10px 10px 0;padding:16px 20px;margin:14px 0}
+  .callout .label{color:var(--good)}
+  figure{margin:0}
+  svg{width:100%;height:auto;display:block}
+  .svg-cap{font-size:12.5px;color:var(--faint);margin-top:8px;font-family:var(--mono)}
+  footer{margin-top:56px;border-top:1px solid var(--line);padding-top:20px;color:var(--faint);font-size:13px}
+  footer code{font-family:var(--mono);color:var(--muted)}
+  a{color:var(--accent);text-decoration:none}
+  .s-mono{font-family:var(--mono)}
+  .grade{color:var(--good);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="label">Build Ledger · Architecture Spine</span>
+  <h1>How Build Ledger is built</h1>
+  <p class="lede">One local pipeline computes evidence from real repositories, redacts it fail-closed,
+    and emits a single versioned file that a static page renders. Collector and page are coupled by that file
+    and nothing else. The decisions below are recorded, not asserted — every one survived an adversarial review.</p>
+
+  <div class="meta">
+    <div><div class="k">Paradigm</div><div class="v">pipes &amp; filters</div></div>
+    <div><div class="k">Altitude</div><div class="v">initiative</div></div>
+    <div><div class="k">Invariants</div><div class="v">15 ADs</div></div>
+    <div><div class="k">Cost</div><div class="v">$0 / mo</div></div>
+    <div><div class="k">Gate</div><div class="v grade">passed</div></div>
+    <div><div class="k">Status</div><div class="v">final · 2026-06-25</div></div>
+  </div>
+
+  <h2>The pipeline</h2>
+  <figure>
+  <svg viewBox="0 0 960 360" role="img" aria-label="Build Ledger data-flow and privacy boundary">
+    <defs>
+      <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 z" fill="#9aa1ac"/>
+      </marker>
+      <marker id="arwA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 z" fill="#3a5bd9"/>
+      </marker>
+    </defs>
+
+    <!-- trusted local boundary -->
+    <rect x="12" y="40" width="600" height="300" rx="14" fill="#ffffff" stroke="#cfd5e8" stroke-dasharray="6 5"/>
+    <text x="30" y="64" font-family="ui-monospace,monospace" font-size="11" letter-spacing="1.5" fill="#6b7280">TRUSTED LOCAL MACHINE — SOLE PRODUCER</text>
+
+    <!-- sources -->
+    <g font-family="ui-monospace,monospace" font-size="11.5" fill="#33373e">
+      <rect x="32" y="86" width="150" height="34" rx="8" fill="#f6f7f9" stroke="#e6e8ec"/>
+      <text x="44" y="107">~/Projects clones</text>
+      <rect x="32" y="130" width="150" height="34" rx="8" fill="#f6f7f9" stroke="#e6e8ec"/>
+      <text x="44" y="151">~/.claude + ~/.codex</text>
+      <rect x="32" y="174" width="150" height="34" rx="8" fill="#f6f7f9" stroke="#e6e8ec"/>
+      <text x="44" y="195">BMAD memlogs</text>
+    </g>
+
+    <!-- collector -->
+    <rect x="214" y="92" width="150" height="120" rx="10" fill="#eef2fe" stroke="#d9e1fb"/>
+    <text x="234" y="116" font-family="ui-monospace,monospace" font-size="11" fill="#3a5bd9">COLLECTOR (Python)</text>
+    <text x="234" y="140" font-family="var(--sans)" font-size="13" fill="#15181d" font-weight="600">7 Modules</text>
+    <text x="234" y="158" font-family="ui-monospace,monospace" font-size="10.5" fill="#6b7280">filters → one slice each</text>
+    <text x="234" y="184" font-family="var(--sans)" font-size="12.5" fill="#15181d">assembler · AD-13/14/15</text>
+
+    <!-- redaction gate -->
+    <polygon points="404,152 432,124 460,152 432,180" fill="#fff" stroke="#9a6b00" stroke-width="1.4"/>
+    <text x="432" y="156" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#9a6b00">REDACT</text>
+    <text x="432" y="200" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#9a6b00">whole-doc · fail-closed</text>
+
+    <!-- public ledger -->
+    <rect x="486" y="120" width="110" height="44" rx="8" fill="#ffffff" stroke="#3a5bd9" stroke-width="1.3"/>
+    <text x="541" y="139" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#3a5bd9">build-ledger</text>
+    <text x="541" y="153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#3a5bd9">.json</text>
+
+    <!-- private drawer -->
+    <rect x="486" y="244" width="110" height="60" rx="8" fill="#fbf7ef" stroke="#e3d3ab"/>
+    <text x="541" y="266" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#9a6b00">PRIVATE DRAWER</text>
+    <text x="541" y="281" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#9a6b00">~/.build-ledger/</text>
+    <text x="541" y="294" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#9a6b00">mirror.json (AD-5)</text>
+
+    <!-- arrows within local -->
+    <g stroke="#9aa1ac" stroke-width="1.3" fill="none" marker-end="url(#arw)">
+      <path d="M182,103 H210"/>
+      <path d="M182,147 H210"/>
+      <path d="M182,191 H210"/>
+      <path d="M364,152 H402"/>
+      <path d="M460,150 C474,150 474,142 484,142"/>
+      <path d="M450,170 C470,210 480,244 510,250"/>
+    </g>
+
+    <!-- public crossing -->
+    <line x1="612" y1="40" x2="612" y2="340" stroke="#cfd5e8" stroke-dasharray="2 4"/>
+    <text x="624" y="58" font-family="ui-monospace,monospace" font-size="10" letter-spacing="1" fill="#9aa1ac">PUBLIC</text>
+
+    <!-- astro + deploy -->
+    <rect x="660" y="118" width="120" height="48" rx="9" fill="#fff" stroke="#e6e8ec"/>
+    <text x="720" y="138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#33373e">astro build</text>
+    <text x="720" y="153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#6b7280">→ dist/ (AD-8)</text>
+
+    <rect x="812" y="118" width="120" height="48" rx="9" fill="#fff" stroke="#e6e8ec"/>
+    <text x="872" y="138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#33373e">Cloudflare</text>
+    <text x="872" y="153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#6b7280">free · $0</text>
+
+    <rect x="736" y="238" width="160" height="46" rx="9" fill="#eef2fe" stroke="#d9e1fb"/>
+    <text x="816" y="258" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#3a5bd9">raedmund.com</text>
+    <text x="816" y="273" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#3a5bd9">/engineering</text>
+
+    <g stroke="#3a5bd9" stroke-width="1.4" fill="none" marker-end="url(#arwA)">
+      <path d="M596,142 H658"/>
+      <path d="M780,142 H810"/>
+      <path d="M872,166 C872,210 850,238 896,250" stroke="#9aa1ac" marker-end="url(#arw)"/>
+    </g>
+    <!-- git provenance -->
+    <path d="M596,150 C640,150 650,300 730,300" stroke="#9aa1ac" stroke-width="1.2" stroke-dasharray="4 4" fill="none" marker-end="url(#arw)"/>
+    <text x="612" y="322" font-family="ui-monospace,monospace" font-size="9.5" fill="#9aa1ac">git commit + push = provenance trail</text>
+  </svg>
+  <div class="svg-cap">The privacy boundary is the machine boundary. Only the redacted public file ever crosses it.</div>
+  </figure>
+
+  <h2>The load-bearing decisions</h2>
+  <div class="decisions">
+
+    <div class="card">
+      <div class="d-head"><span class="d-num">DECISION 01</span><span class="d-title">Where the Collector runs</span></div>
+      <div class="d-grid">
+        <div class="d-col"><span class="label">The tension</span><p>The hero metric needs git history, which means cloning repos — and 35 are real private <em>client</em> repos. A weekly GitHub Action would put client code on a third-party runner; redaction protects the output, not the clone.</p></div>
+        <div class="d-col"><span class="label">The trade</span><p>Fully-automated CI (autonomous, but client code leaves the machine and the richest modules can't run) vs local-primary (every module runs; nothing client-side ever leaves).</p></div>
+      </div>
+      <div class="chose"><b>Chosen — Local-primary.</b> The Collector runs only on a trusted machine; a local scheduler drives the weekly run; only the redacted file is published. <em>Client code never leaves my machine</em> — a privacy posture that is itself judgment on display.</div>
+    </div>
+
+    <div class="card">
+      <div class="d-head"><span class="d-num">DECISION 02</span><span class="d-title">How the page consumes the data</span></div>
+      <div class="d-grid">
+        <div class="d-col"><span class="label">The tension</span><p>The page is a graded work-sample. A skeptic should be able to verify the numbers, not read a bundle to trust them.</p></div>
+        <div class="d-col"><span class="label">The trade</span><p>Runtime fetch (drop-a-file simplicity, but a JS bundle to inspect) vs build-time render (static HTML with real numbers in view-source; a rebuild per update — free under local-primary).</p></div>
+      </div>
+      <div class="chose"><b>Chosen — Build-time static render (Astro 6).</b> The page is generated into static HTML/CSS/SVG; the published <span class="s-mono">build-ledger.json</span> is served beside it so a reader can diff page against file.</div>
+    </div>
+
+    <div class="card">
+      <div class="d-head"><span class="d-num">DECISION 03</span><span class="d-title">How the privacy boundary is drawn</span></div>
+      <div class="d-grid">
+        <div class="d-col"><span class="label">The tension</span><p>An open collector <em>proves</em> the methodology a skeptic wants to audit — but the same repo must never carry private data over 35 client codebases.</p></div>
+        <div class="d-col"><span class="label">The trade</span><p>Two repos with a hard air-gap (safest, but hides the methodology) vs one public repo whose safety is structural.</p></div>
+      </div>
+      <div class="chose"><b>Chosen — One public repo.</b> Collector + site + data are open as the work-sample; the Collector writes every private output to a path <em>outside</em> the repo tree, so the repo cannot contain private data by construction — not by gitignore discipline.</div>
+    </div>
+
+  </div>
+
+  <h2>The invariants (15 architecture decisions)</h2>
+  <div class="ad-grid">
+    <div class="ad"><div class="id">AD-1</div><div class="t">Local-primary runtime</div><div class="r">Sole producer on a trusted machine; never CI; only the redacted file leaves.</div></div>
+    <div class="ad"><div class="id">AD-2</div><div class="t">Single versioned contract</div><div class="r"><span class="s-mono">build-ledger.json</span> is the only coupling; the page renders solely from it.</div></div>
+    <div class="ad"><div class="id">AD-3</div><div class="t">Module ownership</div><div class="r">Each module owns one slice; no cross-writes; absent data is explicit.</div></div>
+    <div class="ad"><div class="id">AD-4</div><div class="t">Fail-closed redaction</div><div class="r">Whole-document assert before publish; controlled-vocabulary free-text; a failing run does not publish.</div></div>
+    <div class="ad"><div class="id">AD-5</div><div class="t">Private outputs out of tree</div><div class="r">The mirror &amp; raw evidence live outside the repo — safe by construction.</div></div>
+    <div class="ad"><div class="id">AD-6</div><div class="t">Mirror never public</div><div class="r">The brutally-honest view is private-only; no <span class="s-mono">mirror_view</span> key ships.</div></div>
+    <div class="ad"><div class="id">AD-7</div><div class="t">Semantic versioning</div><div class="r">Additive = MINOR (the v1.5 line-level path); breaking = MAJOR the page refuses.</div></div>
+    <div class="ad"><div class="id">AD-8</div><div class="t">Build-time static render</div><div class="r">Numbers in the HTML, not a bundle; file served beside the page.</div></div>
+    <div class="ad"><div class="id">AD-9</div><div class="t">Aggregate-only, no transcripts</div><div class="r">Log-derived modules emit counts/ratios only — never raw text.</div></div>
+    <div class="ad"><div class="id">AD-10</div><div class="t">Provenance-first contract</div><div class="r">Hero = co-authorship + artefacts; commit-share is a labelled lower bound; no spend-leaderboard structure.</div></div>
+    <div class="ad"><div class="id">AD-11</div><div class="t">Auditable cost or none</div><div class="r">Pinned, dated, labelled price source; never estimated — omit if unsourceable.</div></div>
+    <div class="ad"><div class="id">AD-12</div><div class="t">Free static host, local deploy</div><div class="r">Pre-built <span class="s-mono">dist/</span> deploy; no CI, no host build, $0; host is swappable.</div></div>
+    <div class="ad"><div class="id">AD-13</div><div class="t">Assembler owns collections</div><div class="r">The entrypoint owns <span class="s-mono">repositories[]</span> &amp; ids; modules contribute by id.</div></div>
+    <div class="ad"><div class="id">AD-14</div><div class="t">Aggregates are derived</div><div class="r">Totals are a pure projection of the rows — reconcilable by construction.</div></div>
+    <div class="ad"><div class="id">AD-15</div><div class="t">Atomic, fail-closed run</div><div class="r">Build in memory → atomic replace; tiering → aggregate → assert → write; deterministic.</div></div>
+  </div>
+
+  <h2>Stack</h2>
+  <div class="stack">
+    <span class="pill"><b>Python</b> 3.14</span>
+    <span class="pill"><b>Astro</b> 6</span>
+    <span class="pill"><b>Node</b> 24 LTS</span>
+    <span class="pill">gh · git · tokei</span>
+    <span class="pill"><b>wrangler</b> → Cloudflare</span>
+    <span class="pill">launchd / cron</span>
+  </div>
+
+  <div class="callout">
+    <span class="label">Judgment on display</span>
+    <p style="margin:6px 0 0;font-size:15px;color:#234;">The whole architecture optimizes for one thing a skeptic can check: <b>every figure is generated from source, redacted fail-closed, and traceable to the file it came from.</b> The open collector is the methodology; the out-of-tree private drawer is the safety; the lower-bound framing of the hero number is the honesty. Nothing here asks to be trusted.</p>
+  </div>
+
+  <footer>
+    Derived from <code>ARCHITECTURE-SPINE.md</code> · reconciled against the Build Ledger PRD, brief, addendum, and the v0.2 collector spike ·
+    passed a deterministic lint + a six-lens adversarial reviewer gate (15 ADs, lint-clean).
+    A continuously-updated, inspectable record — measured, auditable, not a CV.
+  </footer>
+
+</div>
+</body>
+</html>

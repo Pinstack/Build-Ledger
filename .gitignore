@@ -1,0 +1,20 @@
+# Vendored BMAD framework (third-party tooling; not this project's source)
+_bmad/
+.claude/
+.agents/
+
+# Logs / scratch
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

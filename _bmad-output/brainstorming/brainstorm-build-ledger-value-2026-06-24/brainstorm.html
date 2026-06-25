@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Ledger — Brainstorm Keepsake · 2026-06-24</title>
+<style>
+  :root{
+    --paper:#f4f1ea;
+    --paper-2:#efece3;
+    --card:#fbfaf6;
+    --ink:#1c1a17;
+    --ink-soft:#46423b;
+    --ink-faint:#7a756b;
+    --rule:#d8d3c7;
+    --rule-soft:#e7e2d6;
+    --accent:#9a2b1e;        /* oxblood audit-stamp red */
+    --accent-soft:#c2705f;
+    --accent-wash:#f2e3df;
+    --grid-0:#e7e2d4;
+    --grid-1:#cdb6a8;
+    --grid-2:#b07f6c;
+    --grid-3:#9a2b1e;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono", monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --maxw: 980px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(0deg, transparent 0, transparent 27px, rgba(0,0,0,0.018) 27px, rgba(0,0,0,0.018) 28px),
+      var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-wash);color:var(--accent)}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px 120px}
+  .mono{font-family:var(--mono)}
+  .tiny{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .accent{color:var(--accent)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+
+  /* ---------- perforated edge ---------- */
+  .perf{height:18px;margin:0 auto;max-width:var(--maxw);
+    background-image:radial-gradient(circle at 9px 9px, var(--paper) 4px, transparent 4.5px);
+    background-size:18px 18px; background-position:center;
+    border-bottom:1px dashed var(--rule);
+    opacity:.6;
+  }
+
+  /* ---------- masthead ---------- */
+  header.mast{padding:46px 0 26px;border-bottom:3px double var(--ink)}
+  .mast-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+  .mast-top .stamp{color:var(--accent);border:1.5px solid var(--accent);padding:3px 9px;border-radius:2px;
+    transform:rotate(-2.2deg);letter-spacing:.2em}
+  h1.title{font-size:clamp(34px,6.4vw,64px);line-height:1.02;margin:20px 0 8px;font-weight:600;letter-spacing:-.015em}
+  h1.title .q{color:var(--ink-faint);font-weight:400}
+  .subtitle{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--ink-soft);max-width:60ch;margin:0 0 26px}
+
+  /* dual goal plate */
+  .goals{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:var(--card)}
+  .goal{padding:18px 20px}
+  .goal+.goal{border-left:1px solid var(--rule)}
+  .goal .lab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .goal .lab .ic{width:13px;height:13px;display:inline-block}
+  .goal h3{margin:0 0 4px;font-size:18px;font-weight:600}
+  .goal p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+
+  /* tally row */
+  .tally{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:22px;border:1px solid var(--rule);border-radius:4px;background:var(--card);overflow:hidden}
+  .tally div{padding:14px 16px;text-align:center}
+  .tally div+div{border-left:1px solid var(--rule)}
+  .tally .n{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--ink);line-height:1}
+  .tally .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:7px}
+
+  /* ---------- window / mirror toggle ---------- */
+  .duality{margin:40px 0 6px;border:1px solid var(--rule);border-radius:6px;background:var(--card);overflow:hidden}
+  .dual-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:16px 20px;border-bottom:1px solid var(--rule-soft)}
+  .dual-head .cap{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+  .switch{display:inline-flex;border:1px solid var(--ink);border-radius:3px;overflow:hidden;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .switch button{appearance:none;border:0;background:transparent;color:var(--ink-soft);padding:7px 15px;cursor:pointer;font:inherit;letter-spacing:inherit}
+  .switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .dual-body{padding:24px 20px 26px;text-align:center;transition:background .4s ease}
+  .pane-line{font-family:var(--serif);font-size:clamp(20px,3.4vw,30px);line-height:1.25;margin:0 auto;max-width:30ch;transition:opacity .35s ease}
+  .pane-sub{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:14px;letter-spacing:.02em}
+  .pane-eq{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-top:18px}
+
+  /* ---------- section scaffolding ---------- */
+  section.tech{margin:62px 0 0;scroll-margin-top:20px}
+  .tech-rule{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+  .tech-rule .seq{font-family:var(--mono);font-size:12px;color:var(--paper);background:var(--accent);padding:3px 8px;border-radius:2px;letter-spacing:.1em;flex:none}
+  .tech-rule .lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);flex:none}
+  .tech-rule .line{flex:1;height:1px;background:var(--rule)}
+  .tech-rule .cnt{font-family:var(--mono);font-size:11px;color:var(--ink-faint);flex:none}
+  h2.tech-name{font-family:var(--serif);font-size:clamp(26px,4.2vw,40px);font-weight:600;margin:6px 0 4px;letter-spacing:-.01em}
+  .tech-gloss{font-family:var(--mono);font-size:12.5px;color:var(--accent-soft);margin:0 0 20px;letter-spacing:.02em}
+  .tech-gloss b{color:var(--accent);font-weight:400}
+
+  /* generic idea text */
+  .idea{font-family:var(--serif)}
+  .idea .pre{font-family:var(--mono);color:var(--accent);font-size:.86em}
+
+  /* ---- T1 JTBD : two-column job slips (external vs personal) ---- */
+  .jtbd{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.jtbd{grid-template-columns:1fr}}
+  .slipset{border:1px solid var(--rule);border-radius:5px;background:var(--card);overflow:hidden}
+  .slipset h4{margin:0;padding:11px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid var(--rule)}
+  .slipset.win h4{color:#2a4a63;background:#eef2f4}
+  .slipset.mir h4{color:var(--accent);background:var(--accent-wash)}
+  .slip{padding:11px 16px;border-bottom:1px dashed var(--rule-soft);font-size:15.5px;line-height:1.45;display:flex;gap:10px}
+  .slip:last-child{border-bottom:0}
+  .slip .when{font-family:var(--mono);font-size:10px;color:var(--ink-faint);flex:none;width:14px;text-align:right;padding-top:4px}
+
+  /* ---- T2 HMW : index cards grid ---- */
+  .hmw{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+  .qcard{border:1px solid var(--rule);border-left:4px solid var(--accent-soft);border-radius:0 5px 5px 0;background:var(--card);padding:14px 16px 15px}
+  .qcard .h{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+  .qcard p{margin:0;font-size:15px;line-height:1.45}
+
+  /* ---- T3 Future Self : interview transcript ---- */
+  .transcript{border:1px solid var(--rule);border-radius:5px;background:var(--card);padding:8px 4px}
+  .qa{padding:12px 20px;border-bottom:1px dashed var(--rule-soft);display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:baseline}
+  .qa:last-child{border-bottom:0}
+  .qa .who{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
+  .qa .who.self{color:var(--accent)}
+  .qa p{margin:0;font-size:16px;line-height:1.5}
+
+  /* ---- T4 Values Archaeology : strata ---- */
+  .strata{border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+  .stratum{display:grid;grid-template-columns:170px 1fr;gap:0;align-items:stretch;border-bottom:1px solid var(--rule-soft)}
+  .stratum:last-child{border-bottom:0}
+  .stratum .v{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:13px 14px;display:flex;align-items:center;color:var(--accent);background:var(--accent-wash);border-right:1px solid var(--rule)}
+  .stratum .d{padding:13px 18px;font-size:15.5px;line-height:1.45;background:var(--card)}
+  @media(max-width:640px){.stratum{grid-template-columns:1fr}.stratum .v{border-right:0;border-bottom:1px solid var(--rule)}}
+
+  /* ---- T5 Sci-Fi Artifact : dossier from the future ---- */
+  .future-frame{border:1.5px solid var(--ink);border-radius:6px;background:linear-gradient(180deg,#f7f4ec,#f1ede2);padding:22px;position:relative}
+  .future-frame::before{content:"DECLASSIFIED · FUTURE EXHIBITS";position:absolute;top:10px;right:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--ink-faint)}
+  .timeline{position:relative;margin-top:6px;padding-left:18px;border-left:2px solid var(--accent-soft)}
+  .tnode{position:relative;padding:9px 0 9px 18px}
+  .tnode::before{content:"";position:absolute;left:-7px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--accent)}
+  .tnode .yr{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--accent);font-weight:600}
+  .tnode p{margin:2px 0 0;font-size:15.5px;line-height:1.45}
+
+  /* ---- T6 One Feature Only : ballot / single-choice ---- */
+  .ballot{border:1px solid var(--rule);border-radius:5px;background:var(--card);overflow:hidden}
+  .ballot .bhd{padding:12px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .opt{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:center;padding:12px 18px;border-bottom:1px dashed var(--rule-soft);cursor:pointer;transition:background .15s}
+  .opt:last-child{border-bottom:0}
+  .opt:hover{background:var(--paper-2)}
+  .opt .box{width:18px;height:18px;border:1.5px solid var(--ink-faint);border-radius:3px;margin:0 auto;position:relative;transition:.15s}
+  .opt p{margin:0;font-size:15.5px;line-height:1.4}
+  .opt.win .box{border-color:var(--accent);background:var(--accent)}
+  .opt.win .box::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(42deg)}
+  .opt.win p{color:var(--ink);font-weight:600}
+  .opt .tag{display:none}
+  .opt.win .tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);border-radius:2px;padding:1px 6px;margin-left:8px;vertical-align:middle}
+
+  /* ---- T7 Kill the Crown Jewel : strike-through ledger ---- */
+  .kill{border:1px solid var(--rule);border-radius:5px;background:var(--card);overflow:hidden}
+  .krow{display:grid;grid-template-columns:1fr 26px 1fr;gap:10px;align-items:center;padding:12px 18px;border-bottom:1px dashed var(--rule-soft)}
+  .krow:last-child{border-bottom:0}
+  .krow .dead{font-size:14.5px;color:var(--ink-faint);text-decoration:line-through;text-decoration-color:var(--accent);text-decoration-thickness:1.5px}
+  .krow .arr{text-align:center;color:var(--accent);font-family:var(--mono);font-size:15px}
+  .krow .live{font-size:15.5px;line-height:1.4}
+  @media(max-width:640px){.krow{grid-template-columns:1fr;gap:3px}.krow .arr{text-align:left}}
+
+  /* ---- T8 Ecosystem : node map ---- */
+  .eco{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:13px}
+  .enode{border:1px solid var(--rule);border-radius:5px;background:var(--card);padding:13px 15px;position:relative}
+  .enode::before{content:"◇";position:absolute;top:11px;right:13px;color:var(--accent-soft);font-size:13px}
+  .enode .role{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .enode p{margin:0;font-size:14.5px;line-height:1.42}
+
+  /* ---- T9 Emerging Tech Collision : reaction rows ---- */
+  .collide{display:grid;gap:10px}
+  .crow{display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid var(--rule);border-radius:5px;background:var(--card);overflow:hidden;align-items:stretch}
+  .crow .lhs{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--accent);background:var(--accent-wash);padding:12px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid var(--rule)}
+  .crow .lhs .x{color:var(--ink-faint)}
+  .crow .rhs{padding:12px 16px;font-size:15px;line-height:1.42}
+  @media(max-width:640px){.crow{grid-template-columns:1fr}.crow .lhs{border-right:0;border-bottom:1px solid var(--rule)}}
+
+  /* ---------- insight interludes ---------- */
+  .insight{margin:26px 0;border-left:4px solid var(--accent);background:var(--accent-wash);padding:14px 20px;border-radius:0 5px 5px 0}
+  .insight .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+  .insight p{margin:0;font-size:16px;line-height:1.5;color:var(--ink)}
+
+  /* ---------- heatmap ---------- */
+  .heat-wrap{margin:30px 0 0;border:1px solid var(--rule);border-radius:6px;background:var(--card);padding:20px}
+  .heat-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .heat-head .t{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+  .heat-head .leg{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+  .heat-head .leg i{width:11px;height:11px;border-radius:2px;display:inline-block}
+  .heat-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;overflow-x:auto;padding-bottom:4px}
+  .cell{width:13px;height:13px;border-radius:2px;background:var(--grid-0);transition:transform .1s}
+  .cell:hover{transform:scale(1.35)}
+
+  /* ---------- SYNTHESIS climax ---------- */
+  .synth{margin:90px 0 0;border:2px solid var(--ink);border-radius:8px;background:linear-gradient(180deg,#1c1a17,#262320);color:#f1ede2;padding:0;overflow:hidden;position:relative}
+  .synth .banner{padding:30px 26px 20px;border-bottom:1px solid rgba(255,255,255,.14);text-align:center}
+  .synth .banner .k{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-soft)}
+  .synth .banner h2{font-family:var(--serif);font-size:clamp(30px,6vw,58px);font-weight:600;margin:12px 0 6px;letter-spacing:-.02em;color:#fbfaf6}
+  .synth .banner .eq{font-family:var(--mono);font-size:clamp(15px,2.6vw,20px);letter-spacing:.12em;color:var(--accent-soft)}
+  .synth .banner p{font-family:var(--serif);font-size:17px;line-height:1.55;max-width:60ch;margin:14px auto 0;color:#d8d3c7}
+
+  .synth-body{padding:26px}
+  .conn{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:6px}
+  .ccard{border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.035);padding:16px 18px}
+  .ccard .num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--accent-soft);margin-bottom:8px}
+  .ccard h4{margin:0 0 6px;font-family:var(--serif);font-size:18px;font-weight:600;color:#fbfaf6}
+  .ccard p{margin:0;font-size:14px;line-height:1.5;color:#cfc9bd}
+  .ccard.hero{grid-column:1/-1;border-color:var(--accent-soft);background:rgba(154,43,30,.16)}
+  .ccard.hero h4{font-size:21px}
+
+  .triad{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:18px 0 0;border:1px solid rgba(255,255,255,.16);border-radius:6px;overflow:hidden}
+  @media(max-width:640px){.triad{grid-template-columns:1fr}}
+  .tri{padding:16px;text-align:center}
+  .tri+.tri{border-left:1px solid rgba(255,255,255,.12)}
+  @media(max-width:640px){.tri+.tri{border-left:0;border-top:1px solid rgba(255,255,255,.12)}}
+  .tri .ic{font-size:24px;margin-bottom:6px;display:block;color:var(--accent-soft)}
+  .tri .nm{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:5px}
+  .tri p{margin:0;font-size:13px;line-height:1.45;color:#cfc9bd}
+  .triad-cap{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--accent-soft);margin:14px 0 0}
+
+  /* closed loop ring */
+  .loop{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:22px 0 0;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#e7e2d6}
+  .loop .step{border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:7px 14px;background:rgba(255,255,255,.04)}
+  .loop .to{color:var(--accent-soft)}
+  .loop-cap{text-align:center;font-family:var(--serif);font-size:15px;color:#cfc9bd;margin:12px auto 0;max-width:54ch}
+
+  .resolution{margin:22px 0 0;display:grid;grid-template-columns:1fr auto 1fr;gap:0;border:1px solid var(--accent-soft);border-radius:6px;overflow:hidden;align-items:stretch}
+  @media(max-width:640px){.resolution{grid-template-columns:1fr}}
+  .res{padding:18px 20px;background:rgba(255,255,255,.035)}
+  .res .k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:6px}
+  .res h4{margin:0 0 4px;font-family:var(--serif);font-size:19px;color:#fbfaf6;font-weight:600}
+  .res p{margin:0;font-size:14px;color:#cfc9bd;line-height:1.5}
+  .res-mid{display:flex;align-items:center;justify-content:center;padding:0 14px;font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--accent-soft);background:rgba(154,43,30,.14);border-left:1px solid var(--accent-soft);border-right:1px solid var(--accent-soft)}
+  @media(max-width:640px){.res-mid{padding:10px;border:0;border-top:1px solid var(--accent-soft);border-bottom:1px solid var(--accent-soft)}}
+
+  /* ---------- colophon ---------- */
+  footer.colophon{margin-top:56px;border-top:3px double var(--ink);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
+  footer .sig{color:var(--accent);border:1.5px solid var(--accent);border-radius:2px;padding:5px 11px;transform:rotate(-1.5deg);letter-spacing:.1em}
+
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="perf" aria-hidden="true"></div>
+<div class="wrap">
+
+  <h2 class="sr-only">A keepsake from a brainstorming session on what would add value to Build Ledger — a proof-of-work engineering ledger that is both an external window and a personal mirror. 101 ideas across 9 techniques, ending in a synthesis.</h2>
+
+  <!-- ===================== MASTHEAD ===================== -->
+  <header class="mast">
+    <div class="mast-top">
+      <span>Build Ledger · Ideation Record</span>
+      <span class="stamp">Exhibit · Brainstorm</span>
+      <span>Filed 2026-06-24 · 18:23</span>
+    </div>
+    <h1 class="title"><span class="q">What would add value to</span><br>Build Ledger?</h1>
+    <p class="subtitle">A public, auditable, weekly-updated proof-of-work ledger — one that proves <em>how</em> someone builds software with AI agents. Deliberately anti-vanity: no token counts, no lines-of-code bragging. Only evidence.</p>
+
+    <div class="goals">
+      <div class="goal">
+        <div class="lab"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="12" y1="3" x2="12" y2="21"/></svg>The window</div>
+        <h3>External proof</h3>
+        <p>Make a skeptical "Forward-Deployed Engineer, Agentic Solutions" hiring manager believe — in under 60 seconds — that the AI-assisted work is real engineering.</p>
+      </div>
+      <div class="goal">
+        <div class="lab"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="7" ry="9"/><line x1="12" y1="3" x2="12" y2="21"/></svg>The mirror</div>
+        <h3>Personal insight</h3>
+        <p>An <span class="mono">/insights</span>-style self-knowledge tool: am I actually growing as an engineer, or just busy? The engineering diary never written by hand.</p>
+      </div>
+    </div>
+
+    <div class="tally" role="group" aria-label="Session tally">
+      <div><div class="n">101</div><div class="k">ideas</div></div>
+      <div><div class="n">9</div><div class="k">technique lenses</div></div>
+      <div><div class="n">6</div><div class="k">insights</div></div>
+      <div><div class="n">01</div><div class="k">synthesis</div></div>
+    </div>
+  </header>
+
+  <!-- ===================== WINDOW / MIRROR DUALITY ===================== -->
+  <div class="duality">
+    <div class="dual-head">
+      <span class="cap">The defining duality — turn the artifact over</span>
+      <div class="switch" role="group" aria-label="Window or mirror view">
+        <button id="btn-win" aria-pressed="true">Window</button>
+        <button id="btn-mir" aria-pressed="false">Mirror</button>
+      </div>
+    </div>
+    <div class="dual-body" id="dualBody">
+      <p class="pane-line" id="paneLine">Held up to the world, it is a <strong>window</strong>—<br>external proof for a skeptic who must be convinced fast.</p>
+      <p class="pane-sub" id="paneSub">Faced outward · for the hiring manager</p>
+      <p class="pane-eq">turn it over →</p>
+    </div>
+  </div>
+
+  <!-- ===================== T1 · JOB TO BE DONE ===================== -->
+  <section class="tech" id="t1">
+    <div class="tech-rule"><span class="seq">01</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">13 ideas · wave 1</span></div>
+    <h2 class="tech-name">Job to Be Done</h2>
+    <p class="tech-gloss">What is this thing <b>hired</b> to do — outward, and inward?</p>
+    <div class="jtbd">
+      <div class="slipset win">
+        <h4>External jobs · the window</h4>
+        <div class="slip"><span class="when">01</span><span>Make a skeptical hiring manager believe my AI-assisted work is real engineering in under 60 seconds — the GL job.</span></div>
+        <div class="slip"><span class="when">02</span><span>Give me ONE link that ends the "did you actually build that?" conversation.</span></div>
+        <div class="slip"><span class="when">03</span><span>Apply to agentic roles without rewriting a portfolio each time — one living artifact.</span></div>
+        <div class="slip"><span class="when">04</span><span>Prove seniority and scope (systems, not tickets) without name-dropping employers or breaking NDAs.</span></div>
+        <div class="slip"><span class="when">05</span><span>Convert a cold DM into a reply by being un-ignorable.</span></div>
+      </div>
+      <div class="slipset mir">
+        <h4>Personal jobs · the mirror</h4>
+        <div class="slip"><span class="when">06</span><span>Tell me whether I'm actually growing as an engineer — or just busy.</span></div>
+        <div class="slip"><span class="when">07</span><span>Show which systems are alive vs quietly dead, so I know where my real leverage is.</span></div>
+        <div class="slip"><span class="when">08</span><span>Catch my own drift — am I sliding from building systems to babysitting agents?</span></div>
+        <div class="slip"><span class="when">09</span><span>Give me evidence to keep shipping on impostor-weeks: evidence over feelings.</span></div>
+        <div class="slip"><span class="when">10</span><span>Help me decide what to build next by showing where I'm thin — no tests? one language? no docs?</span></div>
+        <div class="slip"><span class="when">11</span><span>Settle whether AI made me faster, or just noisier.</span></div>
+        <div class="slip"><span class="when">12</span><span>Be the engineering diary I never have to write.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== T2 · HOW MIGHT WE ===================== -->
+  <section class="tech" id="t2">
+    <div class="tech-rule"><span class="seq">02</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">12 ideas · wave 1</span></div>
+    <h2 class="tech-name">How Might We</h2>
+    <p class="tech-gloss">Reframe each desire as an <b>open question</b> — a problem stated so it begs to be solved.</p>
+    <div class="hmw">
+      <div class="qcard"><div class="h">HMW · prove judgment</div><p>Surface "decisions made" — ADRs, things deliberately NOT built, reverts with their reasoning.</p></div>
+      <div class="qcard"><div class="h">HMW · count private work</div><p>Redacted silhouettes: shape and complexity shown, identity hidden. <em>Private fintech platform · 84k LOC · 410 tests.</em></p></div>
+      <div class="qcard"><div class="h">HMW · show AI fluency as craft</div><p>Auto-extract a "how I work with agents" playbook from real CLAUDE.md / AGENTS.md files.</p></div>
+      <div class="qcard"><div class="h">HMW · make it feel alive</div><p>A "this week in my engineering" auto-digest — a changelog of the ledger itself.</p></div>
+      <div class="qcard"><div class="h">HMW · make a recruiter get it</div><p>One-line plain-English verdict per system — e.g. "a live mapping platform for retail real estate."</p></div>
+      <div class="qcard"><div class="h">HMW · turn a number into a story</div><p>Click any metric → the commits, files and evidence behind it. Drill-to-proof.</p></div>
+      <div class="qcard"><div class="h">HMW · motivate without vanity</div><p>Frame streaks as "deep work seasons," not gamified counters.</p></div>
+      <div class="qcard"><div class="h">HMW · de-risk the "AI wrote it" jab</div><p>Show the human-in-the-loop — review comments, eval failures caught, agent mistakes you fixed.</p></div>
+      <div class="qcard"><div class="h">HMW · make it comparable</div><p>"You vs you, 12 months ago" instead of you vs other people.</p></div>
+      <div class="qcard"><div class="h">HMW · be credible at a glance</div><p>Open the actual repo or file from the page — evidence one click from source.</p></div>
+      <div class="qcard"><div class="h">HMW · capture non-code work</div><p>Treat infra, pipelines, prompt systems, evals and dashboards as first-class builds.</p></div>
+      <div class="qcard"><div class="h">HMW · make it worth revisiting</div><p>Auto-draft a monthly engineering retro from the data.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== T3 · FUTURE SELF INTERVIEW ===================== -->
+  <section class="tech" id="t3">
+    <div class="tech-rule"><span class="seq">03</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">12 ideas · wave 1</span></div>
+    <h2 class="tech-name">Future Self Interview</h2>
+    <p class="tech-gloss">Ask the version of you <b>30 years on</b> what this record should have kept.</p>
+    <div class="transcript">
+      <div class="qa"><span class="who self">Future →</span><p>Record the WHY behind each build — you won't remember why Meshic existed in 30 years. Capture intent and origin notes.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Track what you LEARNED, not just what you shipped — a firsts-and-lessons log.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Keep the failures — an honest graveyard of abandoned experiments with one-line postmortems.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Measure sustained care — longest-tended system, a repo kept alive for years, as a headline virtue.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Show the arc of craft — a timeline of capability firsts: backend → GIS → data → AI-native.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Notice when you stopped learning — gently flag plateaus, same stack and patterns for N months.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Honor the boring infrastructure — celebrate migrations, CI and tests as what actually lasts.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Keep a private "just for me" view to read on bad days — not only a job-hunt tool.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Capture who and what you built with, privacy-safe — collaborators and agents that taught you.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>A hand-picked "proud of this" shelf alongside the auto-metrics.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Trace how your relationship with AI matured — from chatting, to building systems around models.</p></div>
+      <div class="qa"><span class="who self">Future →</span><p>Make it legible enough to hand to your kid — a "what I built and how I worked" narrative.</p></div>
+    </div>
+    <div class="insight"><div class="k">Insight · the dual-horizon collapses</div><p>A ledger genuinely useful to Raedmund (the mirror) reads as MORE authentic to GL (the window). Build for the mirror, and the window comes free.</p></div>
+    <div class="insight"><div class="k">Insight · the recurring primitive</div><p>"Redacted silhouettes" — shape and complexity shown, identity hidden — keeps reappearing as the key move that makes private work count without leaking it.</p></div>
+  </section>
+
+  <!-- ===================== T4 · VALUES ARCHAEOLOGY ===================== -->
+  <section class="tech" id="t4">
+    <div class="tech-rule"><span class="seq">04</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">12 ideas · wave 2</span></div>
+    <h2 class="tech-name">Values Archaeology</h2>
+    <p class="tech-gloss">Dig down through the layers — each idea anchored to a <b>value</b> already held.</p>
+    <div class="strata">
+      <div class="stratum"><div class="v">Honesty</div><div class="d">The killer feature is that it can be DISPROVEN — invite scrutiny: "found an error? flag it here."</div></div>
+      <div class="stratum"><div class="v">Craft &gt; hype</div><div class="d">A "craft signals" view — coverage trends, refactor ratio, doc quality — that a craftsman respects.</div></div>
+      <div class="stratum"><div class="v">Autonomy</div><div class="d">Headline SOLO end-to-end ownership, idea → deploy: rare, and valued.</div></div>
+      <div class="stratum"><div class="v">Underestimated</div><div class="d">A quietly devastating "receipts" tone — let the data over-deliver against a humble framing.</div></div>
+      <div class="stratum"><div class="v">Things that run</div><div class="d">A "still running in production" badge — uptime, last-deploy — not a demo.</div></div>
+      <div class="stratum"><div class="v">Mastery</div><div class="d">Make "rate of learning" first-class — new tech adopted AND shipped, not merely used.</div></div>
+      <div class="stratum"><div class="v">Legacy</div><div class="d">A permanent, versioned, citable record — each weekly snapshot archived and linkable.</div></div>
+      <div class="stratum"><div class="v">Truth &gt; performance</div><div class="d">Deliberately show the unflattering bits — gaps, quiet months. Showing them IS the credibility.</div></div>
+      <div class="stratum"><div class="v">Independence</div><div class="d">No employer branding, no platform lock-in — you own the data and the page.</div></div>
+      <div class="stratum"><div class="v">Depth &gt; breadth</div><div class="d">Let it argue for 1–2 deep systems rather than 47 repos.</div></div>
+      <div class="stratum"><div class="v">The acid test</div><div class="d">If the RAW data would embarrass you to a recruiter, it's wrong — design so the raw data is the flex.</div></div>
+      <div class="stratum"><div class="v">Generosity</div><div class="d">Open-source the collector — the tool becomes proof AND a gift.</div></div>
+    </div>
+  </section>
+
+  <!-- ===================== T5 · SCI-FI ARTIFACT ===================== -->
+  <section class="tech" id="t5">
+    <div class="tech-rule"><span class="seq">05</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">12 ideas · wave 2</span></div>
+    <h2 class="tech-name">Sci-Fi Artifact From the Future</h2>
+    <p class="tech-gloss">Imagine the object <b>already won</b> — what does it become once the world adopts it?</p>
+    <div class="future-frame">
+      <div class="timeline">
+        <div class="tnode"><span class="yr">EXHIBIT · Proof-of-Work Passport</span><p>A portable, verifiable credential you present at any agentic interview.</p></div>
+        <div class="tnode"><span class="yr">EXHIBIT · The verified-builder signal</span><p>A recruiter inbox auto-tops you, because the ledger emits a machine-readable "verified builder" signal.</p></div>
+        <div class="tnode"><span class="yr">EXHIBIT · Reference implementation</span><p>A browser extension overlays "Build-Ledger-verified: real systems" on any GitHub — you're the reference impl.</p></div>
+        <div class="tnode"><span class="yr">EXHIBIT · Engineering carbon-dating</span><p>Drop a repo; it dates and grades maturity. Build Ledger is the standard lab.</p></div>
+        <div class="tnode"><span class="yr">2030</span><p>A job post says "send your Build Ledger" the way 2020 said "send your GitHub."</p></div>
+        <div class="tnode"><span class="yr">ONBOARDING</span><p>Your future employer onboards you via the ledger: "here's how Raedmund builds — match his patterns."</p></div>
+        <div class="tnode"><span class="yr">EXHIBIT · The negotiation</span><p>An agent negotiates your salary, citing comparable verified builders.</p></div>
+        <div class="tnode"><span class="yr">EXHIBIT · Diff your career</span><p>Slide across the years — watch stack, judgment and AI-fluency morph.</p></div>
+        <div class="tnode"><span class="yr">EXHIBIT · A tiny economy</span><p>Verified redacted evidence becomes the trust layer for solo-dev contracting.</p></div>
+        <div class="tnode"><span class="yr">ANNUAL</span><p>A printed "annual engineering report" for ONE person — mailed to yourself each year.</p></div>
+        <div class="tnode"><span class="yr">2200</span><p>A historian cites your AI-native artifacts as a primary source on how software was once built.</p></div>
+        <div class="tnode"><span class="yr">2040 · HEIRLOOM</span><p>Your kid attaches your ledger to an application — provenance as heirloom.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== T6 · ONE FEATURE ONLY ===================== -->
+  <section class="tech" id="t6">
+    <div class="tech-rule"><span class="seq">06</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">10 ideas · wave 2</span></div>
+    <h2 class="tech-name">One Feature Only</h2>
+    <p class="tech-gloss">If it could ship <b>exactly one thing</b> — which? Cast a single vote.</p>
+    <div class="ballot">
+      <div class="bhd"><span>Ballot · build only one</span><span>chosen ↓</span></div>
+      <div class="opt win"><span class="box" aria-hidden="true"></span><p>One-click "open the evidence" from any claim — everything is an index into inspectable source.<span class="tag">the atom</span></p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>The "how I work with agents" narrative, auto-built from real artifacts — drop all metrics.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>A single flagship deep-dive (Meshic, fully inspectable end-to-end) — one system, exhaustively proven.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>The weekly auto-update — aliveness is the whole product; a living thing beats any static page.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>The "you vs you" growth curve — the mirror, nothing else.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>The redacted-silhouette of private work — the thing no one else can show.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>A verified "AI wrote most of this, here's proof it's real" claim — the GL thesis on one page.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>The methodology / exclusions page — radical transparency as the entire pitch.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>One honest paragraph + a link to raw build-ledger.json — let the data be the product.</p></div>
+      <div class="opt"><span class="box" aria-hidden="true"></span><p>The "still running in production" proof — live systems pinging now.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== T7 · KILL THE CROWN JEWEL ===================== -->
+  <section class="tech" id="t7">
+    <div class="tech-rule"><span class="seq">07</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">10 ideas · wave 2</span></div>
+    <h2 class="tech-name">Kill the Crown Jewel</h2>
+    <p class="tech-gloss">Strike out the obvious centerpiece — the metrics dashboard — and see what rushes in.</p>
+    <div class="kill">
+      <div class="krow"><span class="dead">Metrics dashboard</span><span class="arr">→</span><span class="live">A curated narrative of 3 systems with deep evidence. Story &gt; stats.</span></div>
+      <div class="krow"><span class="dead">The numbers</span><span class="arr">→</span><span class="live">A gallery of real artifacts — ADRs, CLAUDE.md, eval reports — you can actually read.</span></div>
+      <div class="krow"><span class="dead">The public page</span><span class="arr">→</span><span class="live">A private, on-request evidence bundle only. Scarcity and control as value.</span></div>
+      <div class="krow"><span class="dead">"All repos"</span><span class="arr">→</span><span class="live">One repo, totally transparent, as a representative core sample.</span></div>
+      <div class="krow"><span class="dead">The visual polish</span><span class="arr">→</span><span class="live">A plain audit-grade report: "I'm not selling you, I'm showing you."</span></div>
+      <div class="krow"><span class="dead">Automation</span><span class="arr">→</span><span class="live">A hand-written annual letter, ledger as appendix. Human voice as the jewel.</span></div>
+      <div class="krow"><span class="dead">LOC / commit counts</span><span class="arr">→</span><span class="live">Lead with outcomes — what each system DOES in the world.</span></div>
+      <div class="krow"><span class="dead">"For employers" framing</span><span class="arr">→</span><span class="live">A public engineering lab notebook. Credibility as a side effect.</span></div>
+      <div class="krow"><span class="dead">The dashboard</span><span class="arr">→</span><span class="live">A conversational agent — "ask my ledger anything" — answering from verified data.</span></div>
+      <div class="krow"><span class="dead">Self-authored verdicts</span><span class="arr">→</span><span class="live">Let artifacts speak. Zero adjectives, pure exhibits.</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== T8 · ECOSYSTEM THINKING ===================== -->
+  <section class="tech" id="t8">
+    <div class="tech-rule"><span class="seq">08</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">10 ideas · wave 3</span></div>
+    <h2 class="tech-name">Ecosystem Thinking</h2>
+    <p class="tech-gloss">Stop seeing a page. See an <b>organism</b> among producers, consumers and niches.</p>
+    <div class="eco">
+      <div class="enode"><div class="role">apex consumer</div><p>The ledger as apex consumer, digesting producers: repos, agents, CI, eval logs.</p></div>
+      <div class="enode"><div class="role">honest entropy</div><p>Stale repos visibly FADE — not hidden. Honest decay makes the living parts pop.</p></div>
+      <div class="enode"><div class="role">layer on top</div><p>Integrate with what exists — GitHub, WakaTime, Vercel — rather than re-collect. Be the layer above.</p></div>
+      <div class="enode"><div class="role">trust niche</div><p>Position as the ANTI-score vs CodersRank / Viberank — occupy the trust niche they vacated.</p></div>
+      <div class="enode"><div class="role">closed loop</div><p>Agents feed the ledger, the ledger feeds self-retro, the retro feeds what you build next.</p></div>
+      <div class="enode"><div class="role">keystone</div><p>The collector is the keystone — open-source it so an ecosystem of verified builders grows.</p></div>
+      <div class="enode"><div class="role">cross-pollination</div><p>Cross-link each build to the artifacts it reused — show how your systems fertilize each other.</p></div>
+      <div class="enode"><div class="role">mutualism</div><p>Employers and clients contribute signed redacted verification — third-party trust.</p></div>
+      <div class="enode"><div class="role">map edges</div><p>Surface empty niches honestly — no mobile? no ML training? no public OSS? — as edges of the map.</p></div>
+      <div class="enode"><div class="role">seasons</div><p>Show seasonality and rhythm — build vs maintain vs explore. Your work has seasons.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== T9 · EMERGING TECH COLLISION ===================== -->
+  <section class="tech" id="t9">
+    <div class="tech-rule"><span class="seq">09</span><span class="lab">Technique</span><span class="line"></span><span class="cnt">11 ideas · wave 3</span></div>
+    <h2 class="tech-name">Emerging Tech Collision</h2>
+    <p class="tech-gloss">Slam the ledger into a frontier technology — note what <b>reacts</b>.</p>
+    <div class="collide">
+      <div class="crow"><div class="lhs"><span class="x">×</span> verifiable credentials</div><div class="rhs">Signed, tamper-evident build records — provenance you can't fake.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> AI agents</div><div class="rhs">An agent that adversarially audits your ledger and publishes its "attempt to debunk" — you ran the skeptic.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> on-chain timestamping</div><div class="rhs">Commit hashes anchored, so "I built this before X" is provable.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> LLM evals</div><div class="rhs">Publish your OWN evals of your agents' code as quality evidence — you grade the AI.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> semantic search</div><div class="rhs">"Ask my codebase" across all work — answers cite real files.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> reproducible builds</div><div class="rhs">A "clone-and-run in one command" badge per system.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> knowledge graphs</div><div class="rhs">A graph of your engineering — systems ↔ skills ↔ decisions — not a flat dashboard.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> diff models</div><div class="rhs">Auto-summarize what changed in your CRAFT, quarter over quarter, in prose.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> personal RAG</div><div class="rhs">The ledger as queryable career memory — you and an interviewer can interrogate it live.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> attestation networks</div><div class="rhs">Seed a web-of-trust for builders vouching for each other's redacted evidence.</div></div>
+      <div class="crow"><div class="lhs"><span class="x">×</span> autonomous agents</div><div class="rhs">The ledger maintains itself and opens its own PRs — meta-proof you build self-running systems.</div></div>
+    </div>
+
+    <div class="insight"><div class="k">Insight · expose, don't hide</div><p>The willingness to expose unflattering data — gaps, quiet months, fading repos — IS the credibility. Design to EXPOSE, not hide.</p></div>
+    <div class="insight"><div class="k">Insight · proof and gift</div><p>Open-sourcing the collector turns the tool into proof AND a gift — it could seed a "verified builder" standard. (Recurs across sci-fi, ecosystem and emerging-tech.)</p></div>
+    <div class="insight"><div class="k">Insight · the closed loop</div><p>Agents → ledger → self-retro → next build is the personal-mirror payoff no external portfolio tool offers.</p></div>
+    <div class="insight"><div class="k">Insight · the core tension</div><p>Curate to 1–2 DEEP systems (depth, story &gt; stats) vs a comprehensive ALL-repos sweep. The brief's provenance-first instinct leans curate.</p></div>
+  </section>
+
+  <!-- ===================== LIVE HEATMAP ===================== -->
+  <div class="heat-wrap">
+    <div class="heat-head">
+      <span class="t">Contribution surface · a year of evidence, not vanity</span>
+      <span class="leg">less <i style="background:var(--grid-0)"></i><i style="background:var(--grid-1)"></i><i style="background:var(--grid-2)"></i><i style="background:var(--grid-3)"></i> more</span>
+    </div>
+    <div class="heat-grid" id="heat" role="img" aria-label="A GitHub-style contribution heatmap representing seasons of deep work across a year"></div>
+  </div>
+
+  <!-- ===================== SYNTHESIS · CLIMAX ===================== -->
+  <section class="synth" id="synthesis" aria-labelledby="synth-title">
+    <div class="banner">
+      <div class="k">Synthesis · the session resolves</div>
+      <h2 id="synth-title">The mirror <em>is</em> the window.</h2>
+      <div class="eq">self-knowledge ≡ external proof · one artifact, two faces</div>
+      <p>Build the self-insight tool first. Self-directed honesty turns out to be the unfakeable external signal — it dissolves the old trap of "a resume pretending not to be one." A skeptic can tell the difference between a sales pitch and a person genuinely auditing themselves; the second is the only one that converts.</p>
+    </div>
+
+    <div class="synth-body">
+      <div class="conn">
+        <div class="ccard hero">
+          <div class="num">Connection 01 · the reframe</div>
+          <h4>Mirror = Window</h4>
+          <p>The biggest insight of the session: the personal self-knowledge tool and the external proof are the SAME artifact. A ledger genuinely useful to you reads as more authentic to a hiring manager — so building for the mirror gives the window for free.</p>
+        </div>
+        <div class="ccard">
+          <div class="num">Connection 02 · the moat</div>
+          <h4>Expose, don't hide</h4>
+          <p>The moat is the willingness to show gaps, quiet months, fading repos and the agent mistakes you caught. Anyone can hide; almost no one volunteers their unflattering data. That volunteering is the proof.</p>
+        </div>
+        <div class="ccard">
+          <div class="num">Connection 05 · the atom</div>
+          <h4>Open the evidence</h4>
+          <p>The atomic unit of value: one-click drill-to-proof from any claim to inspectable source. Everything else is an index into this single, repeatable gesture — build this one feature.</p>
+        </div>
+        <div class="ccard">
+          <div class="num">Connection 06 · the meta-move</div>
+          <h4>The self-auditing ledger</h4>
+          <p>A ledger that maintains itself and adversarially audits itself — running the skeptic on its own behalf — is, itself, the ultimate work sample for an agentic-solutions role. The artifact <em>is</em> the demo.</p>
+        </div>
+      </div>
+
+      <p class="triad-cap">Connection 03 · the private-work-trustworthy triad — most differentiating, and nobody has it</p>
+      <div class="triad">
+        <div class="tri">
+          <span class="ic" aria-hidden="true">◐</span>
+          <div class="nm">Redacted silhouettes</div>
+          <p>Shape and complexity shown, identity hidden — private work counts without leaking.</p>
+        </div>
+        <div class="tri">
+          <span class="ic" aria-hidden="true">⛉</span>
+          <div class="nm">Signed records</div>
+          <p>Tamper-evident, cryptographically signed build records — provenance you can't fake.</p>
+        </div>
+        <div class="tri">
+          <span class="ic" aria-hidden="true">⇄</span>
+          <div class="nm">Third-party verification</div>
+          <p>Employers and clients sign the redacted evidence — trust that doesn't come from you alone.</p>
+        </div>
+      </div>
+
+      <p class="triad-cap" style="margin-top:30px">Connection 04 · the breakthrough — a closed loop that becomes an OS for your engineering</p>
+      <div class="loop" aria-label="Closed loop: agents to ledger to self-retro to next build, repeating">
+        <span class="step">agents</span><span class="to">→</span>
+        <span class="step">ledger</span><span class="to">→</span>
+        <span class="step">self-retro</span><span class="to">→</span>
+        <span class="step">next build</span><span class="to">↺</span>
+      </div>
+      <p class="loop-cap">Each turn feeds the next. The loop is the personal-mirror payoff no external portfolio tool can offer — and the thing that makes the ledger feel alive.</p>
+
+      <p class="triad-cap" style="margin-top:34px">The resolution · depth vs comprehensive, dissolved</p>
+      <div class="resolution">
+        <div class="res">
+          <div class="k">Collect — the mirror</div>
+          <h4>Comprehensively</h4>
+          <p>Sweep everything. The private self-insight tool wants the whole, honest picture: all repos, all seasons, all the quiet months.</p>
+        </div>
+        <div class="res-mid">same data ·<br>two faces</div>
+        <div class="res">
+          <div class="k">Present — the window</div>
+          <h4>Curated</h4>
+          <p>Show 1–2 deep systems with exhaustive evidence. The external view is provenance-first and ruthlessly edited. Feeds the brief's Vision / Scope and the PRD.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COLOPHON ===================== -->
+  <footer class="colophon">
+    <span>Build Ledger · brainstorm keepsake</span>
+    <span class="sig">Audited · 101 ideas · clean</span>
+    <span>2026-06-24 · filed for the record</span>
+  </footer>
+
+</div>
+<div class="perf" aria-hidden="true" style="border-bottom:0;border-top:1px dashed var(--rule)"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- window / mirror toggle ---- */
+  var bw = document.getElementById('btn-win');
+  var bm = document.getElementById('btn-mir');
+  var line = document.getElementById('paneLine');
+  var sub  = document.getElementById('paneSub');
+  var body = document.getElementById('dualBody');
+  var eqEl = document.querySelector('.pane-eq');
+
+  var WIN = {
+    html: 'Held up to the world, it is a <strong>window</strong>—<br>external proof for a skeptic who must be convinced fast.',
+    sub:  'Faced outward · for the hiring manager',
+    eq:   'turn it over →',
+    bg:   '#eef2f4'
+  };
+  var MIR = {
+    html: 'Turned toward yourself, it is a <strong>mirror</strong>—<br>a quiet record of whether you are truly growing.',
+    sub:  'Faced inward · for you, on the bad days',
+    eq:   '← and it is the same artifact',
+    bg:   'var(--accent-wash)'
+  };
+
+  function paint(state, pressedWin){
+    line.style.opacity = 0;
+    setTimeout(function(){
+      line.innerHTML = state.html;
+      sub.textContent = state.sub;
+      eqEl.textContent = state.eq;
+      line.style.opacity = 1;
+    }, 180);
+    body.style.background = state.bg;
+    bw.setAttribute('aria-pressed', pressedWin ? 'true':'false');
+    bm.setAttribute('aria-pressed', pressedWin ? 'false':'true');
+  }
+  bw.addEventListener('click', function(){ paint(WIN, true); });
+  bm.addEventListener('click', function(){ paint(MIR, false); });
+
+  /* gentle auto-hint: flip once after a beat, then rest */
+  var hinted = false;
+  setTimeout(function(){
+    if(!hinted){ paint(MIR, false); }
+  }, 4200);
+  setTimeout(function(){
+    if(!hinted){ paint(WIN, true); }
+  }, 8000);
+  [bw,bm].forEach(function(b){ b.addEventListener('click', function(){ hinted = true; }); });
+
+  /* ---- contribution heatmap : 53 weeks x 7 days, deterministic "seasons" ---- */
+  var heat = document.getElementById('heat');
+  if(heat){
+    var WEEKS = 53, DAYS = 7;
+    var colors = ['var(--grid-0)','var(--grid-1)','var(--grid-2)','var(--grid-3)'];
+    var months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+    var frag = document.createDocumentFragment();
+    for(var w=0; w<WEEKS; w++){
+      /* seasonal envelope: two deep-work seasons + one quiet trough (honest entropy) */
+      var phase = w / WEEKS;
+      var season = 0.5
+        + 0.42*Math.sin(phase*Math.PI*2 - 0.6)      /* a broad build season */
+        + 0.20*Math.sin(phase*Math.PI*6 + 1.1);     /* shorter rhythms */
+      /* a deliberate quiet stretch — a couple of weeks that visibly fade */
+      if(w>=20 && w<=24){ season *= 0.22; }
+      for(var d=0; d<DAYS; d++){
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        /* weekend dip + deterministic jitter (no Math.random — stable keepsake) */
+        var weekend = (d===0 || d===6) ? 0.55 : 1.0;
+        var jitter = ((Math.sin((w*7+d)*12.9898)*43758.5453) % 1 + 1) % 1;
+        var intensity = season * weekend * (0.55 + 0.6*jitter);
+        var level = 0;
+        if(intensity > 0.85) level = 3;
+        else if(intensity > 0.55) level = 2;
+        else if(intensity > 0.28) level = 1;
+        else level = 0;
+        cell.style.background = colors[level];
+        var mi = Math.min(11, Math.floor(phase*12));
+        cell.title = months[mi] + ' · ' + (level===0 ? 'quiet' : level===3 ? 'deep work' : 'building');
+        frag.appendChild(cell);
+      }
+    }
+    heat.appendChild(frag);
+  }
+
+  /* ---- One Feature ballot : keep it honest — only the atom stays checked,
+          but let a curious reader "weigh" alternates on hover without losing the verdict ---- */
+  var opts = document.querySelectorAll('.ballot .opt');
+  opts.forEach(function(o){
+    o.addEventListener('click', function(){
+      if(o.classList.contains('win')) return;
+      o.style.background = 'var(--accent-wash)';
+      setTimeout(function(){ o.style.background=''; }, 260);
+    });
+  });
+})();
+</script>
+</body>
+</html>

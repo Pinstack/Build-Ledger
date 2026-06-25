@@ -1,0 +1,793 @@
+{
+  "schema_version": "build-ledger.v1",
+  "ledger_metadata": {
+    "generated": "2026-06-24T19:54:40Z",
+    "collector_version": "0.2.0",
+    "github_identities": [
+      "Pinstack"
+    ],
+    "repo_count": 47,
+    "allowlist_size": 0,
+    "coauthorship_source": "local clones (where present); Co-authored-by trailers + author identity"
+  },
+  "aggregates": {
+    "public_repos": 12,
+    "private_repos": 35,
+    "total_commits": 2080,
+    "commits_ai_coauthored": 1277,
+    "ai_coauthored_share": 0.614,
+    "commits_agent_authored": 46,
+    "commits_bot_excluded": 62,
+    "repos_with_tests": 9,
+    "repos_with_ci": 7,
+    "repos_with_migrations": 3,
+    "repos_with_ai_artefacts": 10,
+    "languages": {
+      "Python": 31,
+      "HTML": 4,
+      "TypeScript": 4,
+      "JavaScript": 3,
+      "Groovy": 1
+    },
+    "ai_models": {
+      "Claude Opus 4.7": 494,
+      "Claude Sonnet 4.6": 406,
+      "Claude Opus 4.8": 285,
+      "Claude Opus 4.7 (1M context)": 221,
+      "Claude Opus 4.8 (1M context)": 104,
+      "Claude Fable 5": 94,
+      "Cursor": 45,
+      "Cursor Agent": 45,
+      "Claude Haiku 4.5": 17,
+      "Claude": 11,
+      "OpenAI": 2,
+      "Claude Haiku": 2,
+      "Claude Opus 4.6": 2
+    }
+  },
+  "repositories": [
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-04-17",
+      "last_active": "2026-06-24",
+      "coauthorship": {
+        "total_commits": 1495,
+        "commits_ai_coauthored": 1236,
+        "ai_coauthored_share": 0.827,
+        "commits_agent_authored": 46,
+        "commits_human_authored": 1390,
+        "commits_bot": 59
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [
+          "CLAUDE.md",
+          "AGENTS.md",
+          ".cursorrules"
+        ],
+        "tracked_files": 5511
+      },
+      "label": "Private project 1"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-06-24",
+      "last_active": "2026-06-24",
+      "coauthorship": {
+        "total_commits": 4,
+        "commits_ai_coauthored": 4,
+        "ai_coauthored_share": 1.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 4,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [],
+        "tracked_files": 23
+      },
+      "label": "Private project 2"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-26",
+      "last_active": "2026-06-23",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 3"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-10",
+      "last_active": "2026-06-04",
+      "coauthorship": {
+        "total_commits": 54,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 51,
+        "commits_bot": 3
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": true,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [],
+        "tracked_files": 1634
+      },
+      "label": "Private project 4"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-12-10",
+      "last_active": "2026-05-19",
+      "coauthorship": {
+        "total_commits": 243,
+        "commits_ai_coauthored": 11,
+        "ai_coauthored_share": 0.045,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 243,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": true,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [
+          "AGENTS.md"
+        ],
+        "tracked_files": 1893
+      },
+      "label": "Private project 5"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-04-11",
+      "last_active": "2026-04-20",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 6"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-17",
+      "last_active": "2026-04-15",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 7"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "HTML",
+      "created": "2026-04-02",
+      "last_active": "2026-04-10",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 8"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-04-07",
+      "last_active": "2026-04-08",
+      "coauthorship": {
+        "total_commits": 26,
+        "commits_ai_coauthored": 26,
+        "ai_coauthored_share": 1.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 26,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [],
+        "tracked_files": 2139
+      },
+      "label": "Private project 9"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-23",
+      "last_active": "2026-03-26",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 10"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-11-26",
+      "last_active": "2026-03-25",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 11"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-23",
+      "last_active": "2026-03-23",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 12"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-21",
+      "last_active": "2026-03-21",
+      "coauthorship": {
+        "total_commits": 26,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 26,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [],
+        "tracked_files": 3055
+      },
+      "label": "Private project 13"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-06-26",
+      "last_active": "2026-03-20",
+      "coauthorship": {
+        "total_commits": 110,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 110,
+        "commits_bot": 0,
+        "ai_models": {}
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": true,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [],
+        "tracked_files": 198
+      },
+      "name": "suhail_final",
+      "repo": "Pinstack/suhail_final"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-18",
+      "last_active": "2026-03-18",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 14"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-13",
+      "last_active": "2026-03-13",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 15"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-03-11",
+      "last_active": "2026-03-13",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 16"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "HTML",
+      "created": "2026-03-10",
+      "last_active": "2026-03-10",
+      "coauthorship": null,
+      "signals": null,
+      "name": "symphony-smoke-test",
+      "repo": "Pinstack/symphony-smoke-test"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Groovy",
+      "created": "2026-03-10",
+      "last_active": "2026-03-10",
+      "coauthorship": null,
+      "signals": null,
+      "name": "bmad-symphony",
+      "repo": "Pinstack/bmad-symphony"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "TypeScript",
+      "created": "2026-01-27",
+      "last_active": "2026-01-27",
+      "coauthorship": null,
+      "signals": null,
+      "name": "restaurant_manager",
+      "repo": "Pinstack/restaurant_manager"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2026-01-23",
+      "last_active": "2026-01-24",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 17"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-11-15",
+      "last_active": "2026-01-14",
+      "coauthorship": {
+        "total_commits": 15,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 15,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": true,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [],
+        "tracked_files": 1961
+      },
+      "label": "Private project 18"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-09-28",
+      "last_active": "2025-12-29",
+      "coauthorship": null,
+      "signals": null,
+      "name": "brand_scraper",
+      "repo": "Pinstack/brand_scraper"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "TypeScript",
+      "created": "2025-12-23",
+      "last_active": "2025-12-23",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 19"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "TypeScript",
+      "created": "2025-11-28",
+      "last_active": "2025-12-09",
+      "coauthorship": {
+        "total_commits": 52,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 52,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [],
+        "tracked_files": 4774
+      },
+      "label": "Private project 20"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "JavaScript",
+      "created": "2025-11-20",
+      "last_active": "2025-11-20",
+      "coauthorship": {
+        "total_commits": 9,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 9,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": true,
+        "ai_artefacts": [],
+        "tracked_files": 23
+      },
+      "label": "Private project 21"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "HTML",
+      "created": "2025-10-01",
+      "last_active": "2025-11-17",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 22"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": null,
+      "created": "2025-11-17",
+      "last_active": "2025-11-17",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 23"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-09-30",
+      "last_active": "2025-11-14",
+      "coauthorship": null,
+      "signals": null,
+      "name": "tenant_scraper",
+      "repo": "Pinstack/tenant_scraper"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "TypeScript",
+      "created": "2025-11-06",
+      "last_active": "2025-11-10",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 24"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": null,
+      "created": "2025-10-06",
+      "last_active": "2025-10-06",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 25"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-09-27",
+      "last_active": "2025-09-28",
+      "coauthorship": null,
+      "signals": null,
+      "name": "googlemapsmall",
+      "repo": "Pinstack/googlemapsmall"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-09-17",
+      "last_active": "2025-09-20",
+      "coauthorship": {
+        "total_commits": 18,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 18,
+        "commits_bot": 0,
+        "ai_models": {}
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [
+          "AGENTS.md"
+        ],
+        "tracked_files": 307
+      },
+      "name": "bmad-crewai",
+      "repo": "Pinstack/bmad-crewai"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": null,
+      "created": "2025-09-18",
+      "last_active": "2025-09-18",
+      "coauthorship": {
+        "total_commits": 4,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 4,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [
+          "AGENTS.md"
+        ],
+        "tracked_files": 85
+      },
+      "label": "Private project 26"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-09-09",
+      "last_active": "2025-09-14",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 27"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-09-10",
+      "last_active": "2025-09-14",
+      "coauthorship": {
+        "total_commits": 3,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 3,
+        "commits_bot": 0,
+        "ai_models": {}
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [],
+        "tracked_files": 25
+      },
+      "name": "MECSR",
+      "repo": "Pinstack/MECSR"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": null,
+      "created": "2025-09-02",
+      "last_active": "2025-09-02",
+      "coauthorship": {
+        "total_commits": 7,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 7,
+        "commits_bot": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [
+          "AGENTS.md"
+        ],
+        "tracked_files": 54
+      },
+      "label": "Private project 28"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-08-25",
+      "last_active": "2025-08-29",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 29"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-07-17",
+      "last_active": "2025-08-21",
+      "coauthorship": {
+        "total_commits": 14,
+        "commits_ai_coauthored": 0,
+        "ai_coauthored_share": 0.0,
+        "commits_agent_authored": 0,
+        "commits_human_authored": 14,
+        "commits_bot": 0,
+        "ai_models": {}
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": false,
+        "has_migrations": true,
+        "has_dockerfile": false,
+        "has_claude_dir": false,
+        "ai_artefacts": [],
+        "tracked_files": 50
+      },
+      "name": "Bayut",
+      "repo": "Pinstack/Bayut"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-07-09",
+      "last_active": "2025-07-09",
+      "coauthorship": null,
+      "signals": null,
+      "name": "meshic_final",
+      "repo": "Pinstack/meshic_final"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-05-30",
+      "last_active": "2025-06-03",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 30"
+    },
+    {
+      "visibility": "public",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-05-21",
+      "last_active": "2025-05-21",
+      "coauthorship": null,
+      "signals": null,
+      "name": "index-rebalancing",
+      "repo": "Pinstack/index-rebalancing"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-03-31",
+      "last_active": "2025-04-16",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 31"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "Python",
+      "created": "2025-03-23",
+      "last_active": "2025-03-24",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 32"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "JavaScript",
+      "created": "2019-06-09",
+      "last_active": "2019-08-29",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 33"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "HTML",
+      "created": "2019-06-10",
+      "last_active": "2019-06-13",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 34"
+    },
+    {
+      "visibility": "private",
+      "archived": false,
+      "primary_language": "JavaScript",
+      "created": "2017-08-11",
+      "last_active": "2017-08-21",
+      "coauthorship": null,
+      "signals": null,
+      "label": "Private project 35"
+    }
+  ],
+  "agentic_practice": {
+    "available": false,
+    "note": "Claude/Codex log module \u2014 next iteration"
+  },
+  "retrospective": {
+    "available": false,
+    "note": "sourced from BMAD memlogs + git \u2014 next iteration"
+  },
+  "in_flight": {
+    "available": false,
+    "note": "WIP branches / open issues / draft PRs \u2014 next iteration"
+  },
+  "exclusions": [
+    "forks",
+    "vendored deps",
+    "generated artefacts",
+    "lockfiles",
+    "minified files",
+    "bot-authored commits (classified out of headline)"
+  ]
+}
