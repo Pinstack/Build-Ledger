@@ -31,7 +31,7 @@ import yaml  # noqa: E402
 
 import contract  # noqa: E402
 import redaction  # noqa: E402
-from modules import activity, artefacts, coauthorship, repos  # noqa: E402
+from modules import activity, artefacts, coauthorship, in_flight, practice, repos, retrospective  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_DIR = Path(__file__).resolve().parent / "config"
@@ -165,7 +165,8 @@ def aggregate(rows: list[dict], descriptors: list[dict], redaction_cfg: dict) ->
 # --- assembly -----------------------------------------------------------------
 def assemble_document(repo_inputs: list[dict], *, exclusion_repo_tallies: dict,
                       date_range: dict, generated_at: str, cfg: dict,
-                      activity: dict | None = None) -> dict:
+                      activity: dict | None = None, agentic_practice: dict | None = None,
+                      retrospective: dict | None = None, in_flight: dict | None = None) -> dict:
     """Build the whole document in memory from already-tiered per-repo inputs (single source of
     truth for both the live run and the data-convergence seed)."""
     redaction_cfg = cfg.get("redaction", {})
@@ -201,9 +202,9 @@ def assemble_document(repo_inputs: list[dict], *, exclusion_repo_tallies: dict,
         },
         "repositories": rows,
         "aggregates": aggregates,
-        "agentic_practice": contract.empty_agentic_practice(),
-        "retrospective": contract.empty_retrospective(),
-        "in_flight": contract.empty_in_flight(),
+        "agentic_practice": agentic_practice or contract.empty_agentic_practice(),
+        "retrospective": retrospective or contract.empty_retrospective(),
+        "in_flight": in_flight or contract.empty_in_flight(),
         "activity": activity or contract.empty_activity(),
         "exclusions": excl,
     }
@@ -274,6 +275,10 @@ def main() -> None:
     cfg = load_config()
     repo_inputs, repo_tallies, clone_paths = collect_live(cfg)
     act = activity.compute(clone_paths, cfg.get("exclusions", {})) if clone_paths else contract.empty_activity()
+    ap = practice.compute(cfg.get("ai_sources", {}), cfg.get("pricing", {}), cfg.get("redaction", {}))
+    retro, mirror_view, retro_ok = retrospective.compute(ROOT)
+    inf = in_flight.compute(clone_paths) if clone_paths else contract.empty_in_flight()
+
     dates = []
     for ri in repo_inputs:
         for key in ("createdAt", "pushedAt"):
@@ -284,8 +289,13 @@ def main() -> None:
                   "latest_commit": max(dates) if dates else None}
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     doc = assemble_document(repo_inputs, exclusion_repo_tallies=repo_tallies,
-                            date_range=date_range, generated_at=generated_at, cfg=cfg, activity=act)
-    publish(doc, OUT, cfg)
+                            date_range=date_range, generated_at=generated_at, cfg=cfg,
+                            activity=act, agentic_practice=ap, retrospective=retro, in_flight=inf)
+
+    # The Mirror View is written ONLY to the out-of-tree private drawer (AD-5/AD-6), never the public file.
+    mirror_doc = {"schema_version": contract.SCHEMA_VERSION, "generated_at": generated_at,
+                  "mirror_view": mirror_view} if retro_ok else None
+    publish(doc, OUT, cfg, write_mirror=mirror_doc)
     a = doc["aggregates"]
     print(f"OK -> {OUT}")
     print(f"repos: {a['repo_counts']['public']} public + {a['repo_counts']['private']} private "

@@ -54,14 +54,25 @@ repositories") is the trusted-local-machine step the code is built and tested fo
 - [x] **3.7** Weekly local schedule — launchd plist + installer + `crontab.example`
       (`scripts/schedule/`, `scripts/scheduled-run.sh`).
 
-### Epic 4 — The Mirror (honest self-insight signals) ⏳ next
-- [ ] 4.1 Agentic Practice & Efficiency from local logs (aggregate-only, auditable-cost-or-none).
-- [ ] 4.2 Two-framing Retrospective — Window publishes, Mirror to the drawer only.
-- [ ] 4.3 In-Flight from auditable live signals only.
+### Epic 4 — The Mirror (honest self-insight signals) ✅
+- [x] **4.1** Agentic Practice & Efficiency (`modules/practice.py`) — cadence, model mix, cache-hit
+      ratio from local Claude Code/Codex logs, aggregate-only (never transcript text, AD-9);
+      auditable-cost-or-none (AD-11): cost computed only from a pinned `pricing.yml`, else omitted.
+      Degrades to `available:false` if logs absent.
+- [x] **4.2** Two-framing Retrospective (`modules/retrospective.py`) — source-bound from git commit
+      subjects + BMAD memlogs (nothing free-authored). The curated Window View publishes; the
+      brutally-honest Mirror View is written ONLY to `~/.build-ledger/private/mirror.json`. The
+      public object carries no `mirror_view` key (AD-6, machine-verified live).
+- [x] **4.3** In-Flight (`modules/in_flight.py`) — WIP branches, TODO/FIXME markers, commit
+      trajectory; aggregate counts only, no branch/issue names (Silhouette-safe, FR-12).
+
+*Live entrypoint (`collect.py main`) verified end-to-end in-container: schema-valid + redaction-safe,
+window_view populated from this repo's own commits (the self-evidencing build retro), mirror_view
+written to the drawer (40 entries), no mirror_view key in the public file.*
 
 ## Verification snapshot (latest)
 
-- Collector test suite: **67 passing** (`unittest`, zero-dependency).
+- Collector test suite: **81 passing** (`unittest`, zero-dependency) — all four epics.
 - `public/build-ledger.json`: schema_version `1.0.0`, **valid + redaction-safe**.
 - Site: **builds static** (`npm run build`), 2 pages; post-build inspection gate passes (no client
   JS, provenance hero + audit links present, `build-ledger.json` served beside the page).
