@@ -54,11 +54,17 @@ BUILD-LOG.md             # autonomous build progress, story-by-story
 
 ## Running the collector
 
-Requires the [GitHub CLI](https://cli.github.com/) authenticated, and local clones under `~/Projects` for the commit-level signals:
+**Prerequisites:** Python **≥3.10** with `pip install -r collector/requirements.txt` (PyYAML); Node **≥22.12** for the site build (see [`.nvmrc`](.nvmrc) → `nvm use`); the [GitHub CLI](https://cli.github.com/) authenticated; and local clones under `~/Projects` for the commit-level signals.
 
 ```bash
-python3 collector/collect.py
-# -> writes public/build-ledger.json
+python3 collector/collect.py     # writes public/build-ledger.json
+```
+
+Or produce the whole publishable cut (collector → validate → static build) in one step. [`scripts/run.sh`](scripts/run.sh) **auto-selects** a compatible Python/Node, so the unattended weekly schedule never trips on a stale shell default (macOS ships Python 3.9; an old nvm default can be Node 20):
+
+```bash
+scripts/run.sh seed              # converge the committed snapshot (no clones/gh needed)
+scripts/run.sh live              # full recompute from source (trusted local machine)
 ```
 
 It reads the repo list via `gh`, computes co-authorship and signals from local clones where present, aggregates, runs the redaction safety gate, and writes the ledger.

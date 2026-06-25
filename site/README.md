@@ -6,6 +6,8 @@ is in view-source, charts are server-generated inline SVG.
 
 ## Build
 
+Requires **Node ≥22.12** (Astro 6 refuses anything older) — see [`../.nvmrc`](../.nvmrc): `nvm use`.
+
 ```bash
 cd site
 npm install
