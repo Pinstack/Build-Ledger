@@ -1,0 +1,19 @@
+# Pinned, dated price table (AD-11). Cost is auditable or OMITTED — NEVER estimated.
+#
+# When a figure is emitted it is shown on the page with `as_of` + `source_url`. Until a published
+# price table is pinned here (as_of + source_url + prices all set), the practice module OMITS cost
+# entirely rather than guessing (auditable-or-none). The values below are intentionally empty so the
+# default posture is "omit", not "estimate".
+
+as_of: null            # ISO date of the published price table once pinned (e.g. "2026-06-01")
+source_url: null       # link to the published price page the table was copied from
+currency: USD
+
+# model -> per-million-token prices. Empty by default => cost omitted.
+prices: {}
+  # Example shape (replace with figures copied from the dated published source):
+  # claude-opus-4-8:
+  #   input_per_mtok: 0.0
+  #   output_per_mtok: 0.0
+  #   cache_read_per_mtok: 0.0
+  #   cache_write_per_mtok: 0.0

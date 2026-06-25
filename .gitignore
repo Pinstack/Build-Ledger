@@ -3,8 +3,22 @@ _bmad/
 .claude/
 .agents/
 
+# Privacy boundary (AD-5): private outputs live OUTSIDE the repo tree
+# (~/.build-ledger/private/). Any in-tree private/ is additionally ignored as defense-in-depth,
+# along with any local-only redaction denylist that ever lands here by accident.
+private/
+**/private/
+redaction-denylist.yml
+mirror.json
+
 # Logs / scratch
 *.log
+
+# Node / Astro (site/)
+node_modules/
+dist/
+.astro/
+.wrangler/
 
 # Python
 __pycache__/

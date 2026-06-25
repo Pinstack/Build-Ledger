@@ -1,0 +1,20 @@
+# Per-repository display policy + the Allowlist. Reviewed BEFORE any private clone (FR-6).
+#
+# Every private repo defaults to display_tier: aggregate_only (a Silhouette) — that default is
+# set centrally in redaction.yml, not here. The Allowlist below is the ONLY mechanism that can
+# promote a private repo above aggregate_only (to `redacted` or `public`), setting allowlisted: true.
+#
+# v1 ships with an EMPTY Allowlist (AD-4): every private repo stays a Silhouette and every
+# repository's `allowlisted` is false. Adding an entry is a deliberate, reviewed act.
+
+allowlist: []          # EMPTY in v1. The only promotion path.
+
+# Optional per-repo overrides. An override to `redacted`/`public` takes effect ONLY if the repo is
+# already public OR present in `allowlist` above (a private repo cannot be promoted by an override
+# alone). Public repos may carry a friendly label/category here.
+overrides: {}
+  # Example (inactive unless the repo is public or allowlisted):
+  # meshic:
+  #   display_tier: public
+  #   label: Meshic
+  #   category: Real-estate intelligence platform

@@ -1,0 +1,24 @@
+# Excluded-from-counts list (FR-1, NFR-3). Applied BEFORE any figure is reported; the per-run
+# exclusion counts are recorded in the `exclusions` block of build-ledger.json and itemized in
+# the Excluded-from-counts Note on the page.
+
+# Whole repositories excluded from the headline set.
+repositories:
+  exclude_forks: true
+  exclude_mirrors: true
+
+# Commit authors classified out of the headline (still counted under exclusions.bot_commits).
+commits:
+  exclude_bot_authors: true        # bot identities are listed in ai_sources.yml#bots
+
+# Paths excluded from LOC / file counts where practical.
+paths:
+  dirs: [node_modules, .venv, venv, env, dist, build, .next, out, coverage, .git, vendor,
+         third_party, __pycache__, .mypy_cache, .pytest_cache, .turbo, .cache]
+  generated_globs: ["*.min.js", "*.min.css", "*.map", "*.generated.*", "*.pb.go", "*_pb2.py",
+                    "*.designer.cs", "*.g.dart"]
+  lockfiles: [package-lock.json, yarn.lock, pnpm-lock.yaml, poetry.lock, Cargo.lock,
+              Pipfile.lock, composer.lock, go.sum, Gemfile.lock]
+  binary_or_data_globs: ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.ico", "*.pdf",
+                         "*.zip", "*.gz", "*.tar", "*.parquet", "*.csv", "*.tsv", "*.sqlite",
+                         "*.db", "*.woff", "*.woff2", "*.ttf"]

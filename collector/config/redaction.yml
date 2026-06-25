@@ -1,0 +1,50 @@
+# Safe-by-default redaction policy (FR-6, AD-4). SAFETY-CRITICAL.
+#
+# This file is the reviewable POLICY only. The sensitive backstop denylist of REAL private
+# repo names and client names lives OUTSIDE the repo tree (AD-5) and is referenced here, never
+# committed — putting real client names in a public repo would itself be the leak this guards.
+
+# The fixed three-value display_tier enum (AD-4). v1 uses only `public` + `aggregate_only`;
+# `redacted` stays defined/representable so the first promotion needs no schema change.
+display_tiers: [public, redacted, aggregate_only]
+default_private_tier: aggregate_only        # every private repo defaults here (Silhouette)
+
+# Field types that must NEVER appear anywhere in the public document. The whole-document assert
+# is the fail-closed backstop; controlled-vocabulary-by-construction is the primary defense.
+prohibited_field_types:
+  - repository_name            # of a non-public repo
+  - file_path
+  - branch_name
+  - commit_message
+  - secret
+  - client_name
+  - proprietary_project_name
+  - private_issue_or_pr_content
+  - raw_transcript
+
+# Controlled vocabulary: the ONLY free-text strings permitted in free-text-bearing fields
+# (agent/bot author names, language/model labels, cost confounders, in_flight labels). Any value
+# outside the vocabulary is bucketed to a generic token by construction, so a novel client name
+# cannot ride through a free-text field (AD-4).
+controlled_vocabulary:
+  languages: [Python, TypeScript, JavaScript, HTML, CSS, SQL, Shell, Go, Rust, Ruby, Java,
+              Groovy, YAML, Markdown, Dockerfile, HCL, Astro, Vue, Svelte, Other]
+  confounders:
+    - project mix
+    - model-price changes
+    - context-window changes
+    - cache-warmth variation
+    - task-complexity mix
+  generic_repo_category: "Private software system"   # the only label a redacted repo may carry
+  # agent/bot identities are sourced from ai_sources.yml (agents + bots)
+
+# Local-only backstop denylist (real private repo + client names). NEVER committed; lives
+# outside the repo tree (AD-5). The local machine supplies it; absent here on purpose.
+denylist_file: "~/.build-ledger/private/redaction-denylist.yml"
+
+# Generic secret-shaped patterns scanned as defense-in-depth.
+secret_patterns:
+  - "(?i)(api[_-]?key|secret|token|password|passwd|bearer)\\s*[:=]"
+  - "AKIA[0-9A-Z]{16}"
+  - "gh[pousr]_[A-Za-z0-9]{20,}"
+  - "-----BEGIN [A-Z ]*PRIVATE KEY-----"
