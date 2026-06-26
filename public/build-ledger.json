@@ -1,9 +1,9 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "ledger_metadata": {
     "generated_at": "2026-06-26T11:43:12Z",
     "collector_version": "1.0.0",
-    "schema_version": "1.0.0",
+    "schema_version": "1.1.0",
     "identities_included": [
       "Pinstack"
     ],

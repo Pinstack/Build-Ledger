@@ -26,9 +26,11 @@ class TestPublishedArtifact(unittest.TestCase):
 
     def test_no_legacy_spike_fields(self):
         self.assertNotEqual(DOC["schema_version"], "build-ledger.v1")  # semver now
-        self.assertEqual(DOC["schema_version"], "1.0.0")
+        self.assertRegex(DOC["schema_version"], r"^1\.\d+\.\d+$")      # MAJOR 1, semver (1.1.0 adds optional fields)
         for r in DOC["repositories"]:
-            self.assertNotIn("visibility", r)          # -> display_tier
+            # `visibility` is now a deliberate additive field (true GitHub visibility, distinct from
+            # display_tier which is the naming/redaction policy). The dropped spike field was the
+            # author-based autonomous signal, not this.
             self.assertNotIn("commits_agent_authored", r.get("coauthorship", {}))
         self.assertIsInstance(DOC["exclusions"], dict)  # counts, not a list
 
@@ -53,8 +55,11 @@ class TestPublishedArtifact(unittest.TestCase):
         agg = DOC["aggregates"]["coauthorship"]
         self.assertEqual(agg["unit"], "commit")
         self.assertTrue(0.0 <= agg["ai_coauthored_share"] <= 1.0)
-        # the published floor: ~61.4% of commits AI-co-authored, commit-level
-        self.assertAlmostEqual(agg["ai_coauthored_share"], 0.614, places=2)
+        # the share is a reconciled lower bound, not a magic number: it must equal
+        # ai_coauthored_commits / total_commits (AD-14), whatever the live cut.
+        self.assertAlmostEqual(
+            agg["ai_coauthored_share"],
+            round(agg["ai_coauthored_commits"] / agg["total_commits"], 3), places=3)
 
     def test_no_attribution_key_in_v1(self):
         # the forward-compatible line-level representation is reserved for v1.5, not emitted in v1

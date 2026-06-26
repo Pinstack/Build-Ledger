@@ -15,7 +15,9 @@ from __future__ import annotations
 import re
 
 # --- versions -----------------------------------------------------------------
-SCHEMA_VERSION = "1.0.0"     # the contract version (top level == ledger_metadata)
+SCHEMA_VERSION = "1.1.0"     # the contract version (top level == ledger_metadata)
+# 1.1.0 (additive, AD-7 MINOR): optional per-repo `visibility` + `agent_sessions`, and enriched
+# agentic_practice (tokens, cadence sub-counts). A v1 page (MAJOR 1) renders these or ignores them.
 SUPPORTED_MAJOR = 1          # a page/collector built for v1 supports MAJOR 1 only
 COLLECTOR_VERSION = "1.0.0"  # the producing collector's own semver
 
