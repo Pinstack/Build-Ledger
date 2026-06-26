@@ -1,27 +1,35 @@
 ---
+// Activity renders only when the module has data (currently: real per-day commits across the
+// discovered clones). Dates + counts only — silhouette-safe. A GitHub-style contribution graph
+// plus monthly commit and net-LOC series.
 import type { Ledger } from '../lib/ledger';
-import { barChart, heatmap } from '../lib/charts';
+import { barChart, heatmap, HEAT_BUCKETS } from '../lib/charts';
+import { int } from '../lib/format';
 const { ledger } = Astro.props as { ledger: Ledger };
 const a = ledger.activity;
-const heatSvg = a.available ? heatmap(a.heatmap, {}) : '';
-const commitsSvg = a.available ? barChart(a.monthly.map((m) => ({ label: m.month, value: m.commits })), { title: 'Commits per month' }) : '';
-const locSvg = a.available ? barChart(a.monthly.map((m) => ({ label: m.month, value: Math.max(0, m.loc_net) })), { title: 'Net LOC per month', accent: '#3f6f54' }) : '';
+const total = a.heatmap.reduce((s, c) => s + c.commits, 0);
+const activeDays = a.heatmap.filter((c) => c.commits > 0).length;
+const months = a.monthly.length;
+// size the grid to the actual data span (+buffer) so the earliest weeks never clip
+const first = a.heatmap[0]?.date, last = a.heatmap[a.heatmap.length - 1]?.date;
+const weeks = first && last ? Math.ceil((Date.parse(last) - Date.parse(first)) / (7 * 86400000)) + 2 : 53;
+const heatSvg = heatmap(a.heatmap, { weeks });
+const commitsSvg = barChart(a.monthly.map((m) => ({ label: m.month, value: m.commits })), { title: 'Commits per month' });
+const locSvg = barChart(a.monthly.map((m) => ({ label: m.month, value: Math.max(0, m.loc_net) })), { title: 'Net LOC per month', accent: '#3f6f54' });
 ---
-{a.available ? (
-  <>
-    <p class="label">Daily commit intensity</p>
-    <Fragment set:html={heatSvg} />
-    <div class="card-grid" style="margin-top:20px; grid-template-columns:1fr 1fr;">
-      <div><p class="label">Commits / month</p><Fragment set:html={commitsSvg} /></div>
-      <div><p class="label">Net LOC / month</p><Fragment set:html={locSvg} /></div>
-    </div>
-  </>
-) : (
-  <div class="empty">
-    <p class="label">No per-period activity in this run</p>
-    The daily commit-intensity heatmap and the commits/month + net-LOC/month charts populate from
-    git on a full local collector run (the local-primary scan, AD-1). This published cut was
-    converged from the prior snapshot, which did not carry per-day series — so the charts render as
-    intentionally empty rather than fabricated.
+<div class="activity-head">
+  <div>
+    <span class="numeral md">{int(total)}</span>
+    <span class="ahead-sub">commits · {int(activeDays)} active days · trailing {months} months</span>
   </div>
-)}
+  <div class="heat-legend">
+    <span>Less</span>
+    {HEAT_BUCKETS.map((c) => (<span class="hl-cell" style={`background:${c}`}></span>))}
+    <span>More</span>
+  </div>
+</div>
+<div class="heat-wrap"><Fragment set:html={heatSvg} /></div>
+<div class="card-grid" style="grid-template-columns:1fr 1fr; margin-top:22px; gap:18px;">
+  <div><p class="label">Commits / month</p><Fragment set:html={commitsSvg} /></div>
+  <div><p class="label">Net LOC / month</p><Fragment set:html={locSvg} /></div>
+</div>

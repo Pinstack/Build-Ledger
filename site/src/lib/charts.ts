@@ -34,26 +34,29 @@ export function barChart(data: Bar[], opts: { accent?: string; title?: string; t
 
 interface Cell { date: string; commits: number; }
 
-export function heatmap(cells: Cell[], opts: { accent?: string; weeks?: number } = {}): string {
+// GitHub-style 5-step intensity scale (0 + four solid indigo buckets). Exported so the
+// legend in the Activity component renders the exact same colours.
+export const HEAT_BUCKETS = ['#ebedf0', '#c7d0f2', '#8fa1e3', '#5a70c9', '#3a4f9c'];
+// Fixed commit-count thresholds → bucket index (GitHub uses count bands, not a ratio).
+export function heatBucket(v: number): number {
+  if (v <= 0) return 0;
+  if (v < 3) return 1;
+  if (v < 6) return 2;
+  if (v < 10) return 3;
+  return 4;
+}
+
+export function heatmap(cells: Cell[], opts: { weeks?: number } = {}): string {
   if (!cells.length) return '';
-  const accent = opts.accent ?? '#3a4f9c';
   const weeks = opts.weeks ?? 53;
   const byDate = new Map(cells.map((c) => [c.date, c.commits]));
-  const maxV = Math.max(1, ...cells.map((c) => c.commits));
   // end at the latest cell date; align the grid end to the end of that week (Saturday)
   const end = new Date(cells[cells.length - 1].date + 'T00:00:00Z');
   end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
   const start = new Date(end);
   start.setUTCDate(start.getUTCDate() - (weeks * 7 - 1));
 
-  const cellSize = 11, gap = 2.5, step = cellSize + gap, padTop = 16, padLeft = 4;
-  const shade = (v: number): string => {
-    if (v <= 0) return '#ebedf0';
-    const t = v / maxV;
-    if (t > 0.66) return accent;
-    if (t > 0.33) return accent + 'b3'; // ~70% alpha
-    return accent + '66';               // ~40% alpha
-  };
+  const cellSize = 12, gap = 3, step = cellSize + gap, padTop = 18, padLeft = 30;
   let rects = '', col = 0, monthLabels = '', lastMonth = -1;
   const d = new Date(start);
   while (d <= end) {
@@ -61,18 +64,22 @@ export function heatmap(cells: Cell[], opts: { accent?: string; weeks?: number }
     const row = d.getUTCDay();
     const iso = d.toISOString().slice(0, 10);
     const v = byDate.get(iso) ?? 0;
-    rects += `<rect x="${x.toFixed(1)}" y="${(padTop + row * step).toFixed(1)}" width="${cellSize}" height="${cellSize}" rx="2" fill="${shade(v)}"><title>${iso}: ${v} commit${v === 1 ? '' : 's'}</title></rect>`;
+    rects += `<rect x="${x.toFixed(1)}" y="${(padTop + row * step).toFixed(1)}" width="${cellSize}" height="${cellSize}" rx="2.5" fill="${HEAT_BUCKETS[heatBucket(v)]}"><title>${iso}: ${v} commit${v === 1 ? '' : 's'}</title></rect>`;
     if (row === 0) {
       const m = d.getUTCMonth();
       if (m !== lastMonth) {
         const name = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m];
-        monthLabels += `<text x="${x.toFixed(1)}" y="10" class="chart-axis">${name}</text>`;
+        monthLabels += `<text x="${x.toFixed(1)}" y="11" class="chart-axis">${name}</text>`;
         lastMonth = m;
       }
     }
     if (row === 6) col++;
     d.setUTCDate(d.getUTCDate() + 1);
   }
+  // weekday labels (Mon / Wed / Fri), like GitHub
+  const wd = [[1, 'Mon'], [3, 'Wed'], [5, 'Fri']] as const;
+  const dayLabels = wd.map(([r, name]) =>
+    `<text x="0" y="${(padTop + r * step + cellSize - 2).toFixed(1)}" class="chart-axis">${name}</text>`).join('');
   const W = padLeft + (col + 1) * step, H = padTop + 7 * step;
-  return `<svg viewBox="0 0 ${W} ${H}" class="heatmap" role="img" aria-label="Daily commit intensity, trailing ${weeks} weeks">${monthLabels}${rects}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" class="heatmap" role="img" preserveAspectRatio="xMinYMin meet" aria-label="Daily commit intensity, trailing ${weeks} weeks">${monthLabels}${dayLabels}${rects}</svg>`;
 }

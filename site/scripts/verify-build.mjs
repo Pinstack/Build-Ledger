@@ -17,7 +17,7 @@ if (!existsSync(page)) {
 }
 const html = readFileSync(page, 'utf8');
 if (!/not a productivity score/i.test(html)) fails.push('framing line missing near top');
-if (!/≥/.test(html)) fails.push('provenance hero lower-bound figure missing');
+if (!/lower bound/i.test(html)) fails.push('provenance lower-bound framing missing (AD-10)');
 if (!/build-ledger\.json/.test(html)) fails.push('no link to build-ledger.json (audit trail)');
 if (/<script\b[^>]*\bsrc=/i.test(html)) fails.push('external client script present (page must be static, AD-8)');
 if (!/Methodology/i.test(html)) fails.push('Methodology note missing');

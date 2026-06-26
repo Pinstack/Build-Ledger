@@ -1,41 +1,125 @@
 ---
-import type { Ledger, Repo } from '../lib/ledger';
+import type { Ledger, Repo, Stats } from '../lib/ledger';
 import { int, pct, shortId } from '../lib/format';
-const { ledger } = Astro.props as { ledger: Ledger };
-const rows = [...ledger.repositories].sort((a, b) => b.metrics.commits - a.metrics.commits);
-const dot = (on: boolean) => (on ? '●' : '·');
+const { ledger, stats } = Astro.props as { ledger: Ledger; stats: Stats };
+const max = Math.max(1, stats.maxCommits);
+const maxS = Math.max(1, stats.maxSessions);
+const repos = ledger.repositories;
+const visPublic = repos.filter((r) => r.visibility === 'public').length;
+const visPrivate = repos.filter((r) => r.visibility === 'private').length;
+const named = repos.filter((r) => r.display_tier === 'public').length;
+const silhouettes = repos.length - named;
 const artOf = (r: Repo) => r.ai_artefacts.workflow_infrastructure + r.ai_artefacts.delivery_artefacts + r.ai_artefacts.quality_controls;
+const controlsOf = (r: Repo) => [
+  r.signals.has_tests && 'Tests', r.signals.has_ci && 'CI', r.signals.has_migrations && 'DB',
+].filter(Boolean) as string[];
+const rowClass = (r: Repo) => [
+  r.visibility === 'public' ? 'is-public' : 'is-private',
+  r.signals.has_tests ? 'is-tests' : '',
+  r.signals.has_ci ? 'is-ci' : '',
+  r.coauthorship.ai_coauthored_commits > 0 ? 'is-coauth' : '',
+].filter(Boolean).join(' ');
 ---
-<div class="table-scroll">
-  <table class="repos">
-    <thead>
-      <tr>
-        <th>Repository</th><th>Tier</th><th>Status</th><th class="n">Commits</th>
-        <th class="n">AI-co-auth</th><th>Tests</th><th>CI</th><th>Migr</th><th class="n">Artefacts</th>
-      </tr>
-    </thead>
-    <tbody>
-      {rows.map((r) => {
-        const isPublic = r.display_tier === 'public';
-        return (
-          <tr class={isPublic ? '' : 'silh'}>
-            <td>{isPublic ? r.label : <span class="silhouette-name">Private · {shortId(r.id)}</span>}</td>
-            <td><span class={`tier ${r.display_tier}`}>{r.display_tier === 'aggregate_only' ? 'silhouette' : r.display_tier}</span></td>
-            <td>{r.status}</td>
-            <td class="n">{int(r.metrics.commits)}</td>
-            <td class="n">{r.coauthorship.total_commits ? pct(r.coauthorship.ai_coauthored_share) : '—'}</td>
-            <td><span class={`dot ${r.signals.has_tests ? '' : 'off'}`}>{dot(r.signals.has_tests)}</span></td>
-            <td><span class={`dot ${r.signals.has_ci ? '' : 'off'}`}>{dot(r.signals.has_ci)}</span></td>
-            <td><span class={`dot ${r.signals.has_migrations ? '' : 'off'}`}>{dot(r.signals.has_migrations)}</span></td>
-            <td class="n">{artOf(r) || '—'}</td>
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
+<div class="privacy-frame">
+  <p><b>{int(visPublic)} public · {int(visPrivate)} private</b> repositories. Visibility is each repo's real GitHub status. Material work is named regardless of visibility; private repos that carry no client identifier are named in full, the rest stay silhouettes — shape and signals only.</p>
+  <div class="agg">
+    <span class="pip lead">{int(visPublic)} public</span>
+    <span class="pip lead">{int(visPrivate)} private</span>
+    <span class="pip"><b>{int(named)}</b> named</span>
+    <span class="pip"><b>{int(silhouettes)}</b> silhouettes</span>
+  </div>
 </div>
-<p class="sub" style="margin-top:10px">
-  Private repositories appear as Silhouettes — shape and signals only, no name, path, or message
-  ({int(ledger.aggregates.repo_counts.private)} of {int(ledger.repositories.length)} rows). Their
-  opaque id is a one-way hash that reveals nothing about the repository.
+
+<div class="ledger">
+  <input class="rf" type="radio" name="repofilter" id="rf-all" checked />
+  <input class="rf" type="radio" name="repofilter" id="rf-public" />
+  <input class="rf" type="radio" name="repofilter" id="rf-private" />
+  <input class="rf" type="radio" name="repofilter" id="rf-tests" />
+  <input class="rf" type="radio" name="repofilter" id="rf-ci" />
+  <input class="rf" type="radio" name="repofilter" id="rf-coauth" />
+  <div class="segmented">
+    <label class="seg" for="rf-all">All active</label>
+    <label class="seg" for="rf-public">Public</label>
+    <label class="seg" for="rf-private">Private</label>
+    <label class="seg" for="rf-tests">Tests</label>
+    <label class="seg" for="rf-ci">CI</label>
+    <label class="seg" for="rf-coauth">Any AI co-authorship</label>
+  </div>
+
+  <div class="table-scroll">
+    <table class="repos">
+      <thead>
+        <tr>
+          <th>Repository / silhouette</th>
+          <th class="n">Commits</th>
+          <th>AI co-authorship</th>
+          <th class="n">Agent sessions</th>
+          <th>Engineering controls</th>
+          <th class="n">Artefacts</th>
+        </tr>
+      </thead>
+      <tbody>
+        {stats.active.map((r) => {
+          const isPublic = r.display_tier === 'public';
+          const share = r.coauthorship.ai_coauthored_share || 0;
+          const hasCo = r.coauthorship.ai_coauthored_commits > 0;
+          const controls = controlsOf(r);
+          return (
+            <tr class={rowClass(r)}>
+              <td>
+                <span class="repo-cell">
+                  {isPublic
+                    ? <span class="repo-name">{r.label}</span>
+                    : <span class="silh-id" title="redacted silhouette">{shortId(r.id)}</span>}
+                  <span class={`vis ${r.visibility}`}>{r.visibility}</span>
+                </span>
+              </td>
+              <td class="n">
+                <span class="commits"><b>{int(r.metrics.commits)}</b>
+                  <span class="cbar"><span style={`width:${((r.metrics.commits / max) * 100).toFixed(1)}%`}></span></span>
+                </span>
+              </td>
+              <td>
+                <span class={`coauth ${hasCo ? '' : 'zero'}`}>
+                  <span class="cobar"><span style={`width:${(share * 100).toFixed(0)}%`}></span></span>
+                  <span class="pctv">{pct(share)}</span>
+                </span>
+              </td>
+              <td class="n">
+                {r.agent_sessions
+                  ? <span class="sess"><b>{int(r.agent_sessions.sessions)}</b><span class="sbar"><span style={`width:${((r.agent_sessions.sessions / maxS) * 100).toFixed(1)}%`}></span></span></span>
+                  : <span class="muted-dash">—</span>}
+              </td>
+              <td>
+                {controls.length
+                  ? <span class="badges">{controls.map((c) => (<span class="badge">{c}</span>))}</span>
+                  : <span class="muted-dash">—</span>}
+              </td>
+              <td class="n">{artOf(r) || <span class="muted-dash">—</span>}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  {stats.dormant.length > 0 && (
+    <details class="dormant">
+      <summary>
+        <b>{int(stats.dormant.length)} dormant repositories</b>
+        <span class="dsub">0 commits in this snapshot · retained for completeness</span>
+      </summary>
+      <div class="dormant-body">
+        {stats.dormant.map((r) => (
+          <span class={`rchip ${r.display_tier === 'public' ? '' : 'priv'}`}>
+            {r.display_tier === 'public' ? r.label : shortId(r.id)}
+          </span>
+        ))}
+      </div>
+    </details>
+  )}
+</div>
+
+<p class="rownote">
+  Each row carries its real GitHub visibility (Public / Private). <span class="silh-id">Monospace ids</span> are redacted silhouettes — one-way hashes, no name. Showing the {int(stats.active.length)} repositories with activity, sorted by commits.
 </p>

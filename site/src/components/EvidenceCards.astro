@@ -1,0 +1,32 @@
+---
+import type { Stats } from '../lib/ledger';
+import { int, pct, compact } from '../lib/format';
+const { stats } = Astro.props as { stats: Stats };
+const co = stats.co;
+const p = stats.practice;
+const claude = p.cadence?.claude_sessions ?? 0;
+const codex = p.cadence?.codex_sessions ?? 0;
+---
+<div class="card-grid">
+  <div class="card card-lead">
+    <p class="label">AI co-authorship</p>
+    <div class="numeral lg"><em>{pct(co.ai_coauthored_share)}</em></div>
+    <p class="foot">explicitly AI-co-authored</p>
+    <p class="caveat">Lower bound — git trailers only. Agent-session coverage (right) is far wider.</p>
+  </div>
+  <div class="card">
+    <p class="label">Agent sessions</p>
+    <div class="numeral lg">{int(p.cadence?.sessions ?? 0)}</div>
+    <p class="foot"><b>{int(claude)}</b> Claude · <b>{int(codex)}</b> Codex · {compact(p.tokens?.output ?? 0)} output tokens</p>
+  </div>
+  <div class="card">
+    <p class="label">Engineering controls</p>
+    <div class="numeral lg">{int(stats.withTests)}<span class="denom">/{int(stats.repoCount)}</span></div>
+    <p class="foot">with tests · <b>{int(stats.withCI)}</b> CI · <b>{int(stats.withMig)}</b> migrations</p>
+  </div>
+  <div class="card">
+    <p class="label">AI-native artefacts</p>
+    <div class="numeral lg">{int(stats.artTotal)}</div>
+    <p class="foot">across <b>{int(stats.reposWithArtefacts)}</b> repositories</p>
+  </div>
+</div>

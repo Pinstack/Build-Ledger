@@ -1,79 +1,88 @@
 ---
 import '../styles/global.css';
-import { loadLedger, SUPPORTED_MAJOR } from '../lib/ledger';
-import LedgerMeta from '../components/LedgerMeta.astro';
+import { loadLedger, deriveStats, SUPPORTED_MAJOR } from '../lib/ledger';
 import Hero from '../components/Hero.astro';
-import ProofMetrics from '../components/ProofMetrics.astro';
-import Activity from '../components/Activity.astro';
+import EvidenceCards from '../components/EvidenceCards.astro';
+import WhatThisProves from '../components/WhatThisProves.astro';
 import RepoTable from '../components/RepoTable.astro';
-import Languages from '../components/Languages.astro';
-import MirrorSections from '../components/MirrorSections.astro';
+import EngineeringControls from '../components/EngineeringControls.astro';
+import AgenticPractice from '../components/AgenticPractice.astro';
+import Activity from '../components/Activity.astro';
 import Methodology from '../components/Methodology.astro';
 
 const res = loadLedger();
+const stats = res.ok ? deriveStats(res.ledger) : null;
+const activity = res.ok && res.ledger.activity.available;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Build Ledger — Engineering</title>
-    <meta name="description" content="An auditable proof-of-work ledger for AI-native engineering — generated from real repositories, not hand-authored. A window for others, a mirror for the builder." />
+    <title>Build Ledger — AI-assisted engineering, evidenced in git</title>
+    <meta name="description" content="A git-backed ledger of sustained AI-assisted engineering. Generated from real repository history, private work redacted, every headline reconciled to source data." />
     <meta name="color-scheme" content="light" />
   </head>
   <body>
-    {res.ok ? (
+    {res.ok && stats ? (
       <>
-        <header class="masthead">
-          <div class="wrap">
-            <h1>Build Ledger</h1>
-            <p class="tagline">A continuously-updated, inspectable record of <em>how</em> software gets built with AI agents — generated from real repositories, not hand-authored.</p>
-            <p class="framing"><b>This is not a productivity score.</b> It is an evidence ledger showing sustained, inspectable engineering activity across real repositories: code, tests, CI, migrations, documentation, and AI-native development artefacts.</p>
-            <LedgerMeta ledger={res.ledger} />
-          </div>
-        </header>
+        <Hero ledger={res.ledger} stats={stats} />
+
+        <div class="wrap evidence">
+          <EvidenceCards stats={stats} />
+        </div>
 
         <main class="wrap">
           <section>
-            <h2 class="section-title">Provenance · the hero</h2>
-            <Hero ledger={res.ledger} />
+            <div class="section-head"><span class="idx">01</span>
+              <div><h2>What this proves</h2><p class="thesis">Activity, AI attribution, and engineering controls are separated so the claim can be inspected rather than trusted.</p></div>
+            </div>
+            <WhatThisProves ledger={res.ledger} stats={stats} />
           </section>
 
           <section>
-            <h2 class="section-title">Proof metrics · volume is supporting cast</h2>
-            <ProofMetrics ledger={res.ledger} />
+            <div class="section-head"><span class="idx">02</span>
+              <div><h2>Repository evidence</h2><p class="thesis">Each repo shows its real GitHub visibility. Material work is named — public or private — while client-identifying repos stay silhouettes.</p></div>
+            </div>
+            <RepoTable ledger={res.ledger} stats={stats} />
           </section>
 
-          <section>
-            <h2 class="section-title">Activity over time</h2>
-            <Activity ledger={res.ledger} />
-          </section>
+          {stats.practice.available && (
+            <section>
+              <div class="section-head"><span class="idx">03</span>
+                <div><h2>Agentic practice</h2><p class="thesis">The work was built across logged Claude Code and Codex sessions — direct evidence of AI authorship beyond git trailers.</p></div>
+              </div>
+              <AgenticPractice stats={stats} />
+            </section>
+          )}
 
           <section>
-            <h2 class="section-title">Repository ledger</h2>
-            <p class="section-note">Every headline figure above reconciles with the sum of these rows. Drill in: public repositories are named in full; private ones are Silhouettes.</p>
-            <RepoTable ledger={res.ledger} />
+            <div class="section-head"><span class="idx">{stats.practice.available ? '04' : '03'}</span>
+              <div><h2>Engineering controls</h2><p class="thesis">Tests, CI, migrations, and the AI-native artefacts that make the workflow itself inspectable.</p></div>
+            </div>
+            <EngineeringControls stats={stats} />
           </section>
 
-          <section>
-            <h2 class="section-title">Languages</h2>
-            <Languages ledger={res.ledger} />
-          </section>
-
-          <section>
-            <h2 class="section-title">The mirror · self-insight signals</h2>
-            <MirrorSections ledger={res.ledger} />
-          </section>
+          {activity && (
+            <section>
+              <div class="section-head"><span class="idx">{stats.practice.available ? '05' : '04'}</span>
+                <div><h2>Activity over time</h2><p class="thesis">Commit cadence from git history — shown as evidence of sustained work, not a productivity score, and reconciled against tests, CI, migrations and artefacts.</p></div>
+              </div>
+              <Activity ledger={res.ledger} />
+            </section>
+          )}
 
           <section style="border-bottom:none;">
-            <h2 class="section-title">Methodology &amp; exclusions</h2>
-            <Methodology ledger={res.ledger} />
+            <div class="section-head"><span class="idx">{`0${3 + (stats.practice.available ? 1 : 0) + 1 + (activity ? 1 : 0)}`}</span>
+              <div><h2>Methodology &amp; exclusions</h2><p class="thesis">How the figures are derived, what silhouettes hide, and what is deliberately excluded.</p></div>
+            </div>
+            <Methodology ledger={res.ledger} stats={stats} />
           </section>
         </main>
 
         <footer>
           <div class="wrap">
-            The page renders solely from <a href={res.ledger.ledger_metadata.data_url}>build-ledger.json</a> (schema {res.ledger.ledger_metadata.schema_version}, collector v{res.ledger.ledger_metadata.collector_version}). Removing the collector does not change what this file can display. Every figure is inspectable, or it doesn&rsquo;t ship.
+            <p>Build Ledger · {res.ledger.ledger_metadata.identities_included.join(', ')} · every figure is inspectable, or it doesn&rsquo;t ship.</p>
           </div>
         </footer>
       </>
@@ -82,7 +91,7 @@ const res = loadLedger();
         <h1>Build Ledger</h1>
         <div class="empty" style="margin-top:20px;">
           <p class="label">Unsupported schema major</p>
-          This page renders schema MAJOR {SUPPORTED_MAJOR} only. The file declares version <b>{res.version}</b>.
+          This page renders schema MAJOR {SUPPORTED_MAJOR} only. The file declares version <b>{res.ok ? '' : res.version}</b>.
           Refusing to render rather than mis-render (AD-7).
         </div>
       </main>
