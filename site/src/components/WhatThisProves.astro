@@ -1,0 +1,31 @@
+---
+import type { Ledger, Stats } from '../lib/ledger';
+import { int, pct } from '../lib/format';
+const { ledger, stats } = Astro.props as { ledger: Ledger; stats: Stats };
+const co = stats.co;
+const p = stats.practice;
+const top = stats.top;
+const rungs = [
+  { tag: 'Hard floor', big: pct(co.ai_coauthored_share),
+    meaning: `of commits carry an explicit Co-authored-by AI trailer — ${int(co.ai_coauthored_commits)} of ${int(co.total_commits)}. Provable, but undercounts.` },
+  { tag: 'Session evidence', big: int(p.cadence?.sessions ?? 0),
+    meaning: `Claude + Codex sessions linked to repository work — the wide-coverage layer trailers miss.` },
+  { tag: 'Workflow evidence', big: int(stats.artTotal),
+    meaning: `AI-native artefacts (agent instructions, MCP, orchestration) across ${int(stats.reposWithArtefacts)} repositories.` },
+  { tag: 'Engineering controls', big: `${int(stats.withTests)}/${int(stats.repoCount)}`,
+    meaning: `repositories with tests · ${int(stats.withCI)} CI · ${int(stats.withMig)} migrations. Real engineering, not toy work.` },
+  { tag: 'Next phase', big: '', meaning: 'Line-level attribution — diff lines mapped to agent sessions.' },
+];
+---
+<p class="ladder-lead">Five independent layers of evidence, strongest first. The flagship repository — Meshic — is <b>{top ? int(top.metrics.commits) : '—'}</b> commits at <b>{top ? pct(top.coauthorship.ai_coauthored_share) : '—'}</b> AI-co-authored.</p>
+<div class="ladder">
+  {rungs.map((r, i) => (
+    <div class={`rung ${r.big ? '' : 'next'}`}>
+      <span class="rung-n">{i < rungs.length - 1 ? `0${i + 1}` : '→'}</span>
+      <span class="rung-tag">{r.tag}</span>
+      <span class="rung-big numeral">{r.big}</span>
+      <span class="rung-meaning" set:html={r.meaning}></span>
+    </div>
+  ))}
+</div>
+<p class="sub" style="margin-top:12px;">Every figure reconciles to <a href={ledger.ledger_metadata.data_url}>build-ledger.json</a>, served beside the page to diff.</p>

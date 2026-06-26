@@ -1,15 +1,15 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "ledger_metadata": {
-    "generated_at": "2026-06-24T19:54:40Z",
+    "generated_at": "2026-06-26T11:43:12Z",
     "collector_version": "1.0.0",
-    "schema_version": "1.0.0",
+    "schema_version": "1.1.0",
     "identities_included": [
       "Pinstack"
     ],
     "date_range": {
-      "first_commit": "2017-08-11",
-      "latest_commit": "2026-06-24"
+      "first_commit": "2025-06-16",
+      "latest_commit": "2026-06-25"
     },
     "data_url": "/build-ledger.json",
     "methodology_url": "/engineering#methodology"
@@ -22,11 +22,11 @@
       "status": "active",
       "metrics": {
         "commits": 3,
-        "active_days": 0,
+        "active_days": 3,
         "files": 25,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "loc_added": 125610,
+        "loc_removed": 6718,
+        "loc_net": 118892
       },
       "signals": {
         "has_tests": false,
@@ -47,7 +47,8 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "MECSR"
+      "label": "MECSR",
+      "visibility": "public"
     },
     {
       "id": "0193072d7c3c",
@@ -81,10 +82,98 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "tenant_scraper"
+      "label": "tenant_scraper",
+      "visibility": "public"
     },
     {
-      "id": "239d9d9dfb1f",
+      "id": "0b2df6a51095",
+      "display_tier": "public",
+      "allowlisted": true,
+      "status": "active",
+      "metrics": {
+        "commits": 52,
+        "active_days": 10,
+        "files": 4727,
+        "loc_added": 1433114,
+        "loc_removed": 82862,
+        "loc_net": 1350252
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": true
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 52,
+        "human_commits": 52,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 2,
+        "delivery_artefacts": 1,
+        "quality_controls": 0
+      },
+      "label": "Meshic v1",
+      "category": "Real-estate intelligence platform",
+      "agent_sessions": {
+        "sessions": 1,
+        "output_tokens": 812,
+        "total_tokens": 127765
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "0d7d6f269b6c",
+      "display_tier": "public",
+      "allowlisted": true,
+      "status": "active",
+      "metrics": {
+        "commits": 54,
+        "active_days": 6,
+        "files": 1588,
+        "loc_added": 228442,
+        "loc_removed": 7010,
+        "loc_net": 221432
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": true
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 54,
+        "human_commits": 51,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": [
+          {
+            "author": "dependabot",
+            "commits": 3
+          }
+        ]
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 3,
+        "delivery_artefacts": 1,
+        "quality_controls": 0
+      },
+      "label": "Meshic Platform",
+      "category": "Real-estate intelligence platform",
+      "agent_sessions": {
+        "sessions": 73,
+        "output_tokens": 2288883,
+        "total_tokens": 454986511
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "0ebf95a3ded5",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -114,10 +203,52 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "248b8d1522ea",
+      "id": "11b51b9a70c7",
+      "display_tier": "public",
+      "allowlisted": true,
+      "status": "active",
+      "metrics": {
+        "commits": 26,
+        "active_days": 1,
+        "files": 2969,
+        "loc_added": 944701,
+        "loc_removed": 260,
+        "loc_net": 944441
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 26,
+        "human_commits": 26,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 2,
+        "delivery_artefacts": 1,
+        "quality_controls": 0
+      },
+      "label": "Research Hub",
+      "category": "Research tooling",
+      "agent_sessions": {
+        "sessions": 33,
+        "output_tokens": 746091,
+        "total_tokens": 89815611
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "11dd073efed7",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -147,40 +278,63 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "24f9183d1a4e",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
+      "id": "1e8f988ad23e",
+      "display_tier": "public",
+      "allowlisted": true,
       "status": "active",
       "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "commits": 1495,
+        "active_days": 66,
+        "files": 5284,
+        "loc_added": 3906899,
+        "loc_removed": 2609745,
+        "loc_net": 1297154
       },
       "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": true
       },
       "coauthorship": {
         "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
+        "total_commits": 1495,
+        "human_commits": 1390,
+        "ai_coauthored_commits": 1223,
+        "ai_coauthored_share": 0.818,
+        "agents": [
+          {
+            "author": "cursor[bot]",
+            "commits": 45
+          },
+          {
+            "author": "Cursor Agent",
+            "commits": 1
+          }
+        ],
+        "excluded_bots": [
+          {
+            "author": "dependabot",
+            "commits": 59
+          }
+        ]
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
+        "workflow_infrastructure": 6,
+        "delivery_artefacts": 1,
         "quality_controls": 0
-      }
+      },
+      "label": "Meshic",
+      "category": "Real-estate intelligence platform",
+      "agent_sessions": {
+        "sessions": 1501,
+        "output_tokens": 109340628,
+        "total_tokens": 19844906949
+      },
+      "visibility": "private"
     },
     {
       "id": "2a86f94fa2d1",
@@ -214,20 +368,345 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "restaurant_manager"
+      "label": "restaurant_manager",
+      "visibility": "public"
     },
     {
-      "id": "326ec1940edb",
+      "id": "2c37db45768c",
+      "display_tier": "public",
+      "allowlisted": true,
+      "status": "active",
+      "metrics": {
+        "commits": 243,
+        "active_days": 61,
+        "files": 1868,
+        "loc_added": 2698208,
+        "loc_removed": 2184386,
+        "loc_net": 513822
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": true
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 243,
+        "human_commits": 243,
+        "ai_coauthored_commits": 1,
+        "ai_coauthored_share": 0.004,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 4,
+        "delivery_artefacts": 2,
+        "quality_controls": 0
+      },
+      "label": "Meshic v2",
+      "category": "Real-estate intelligence platform",
+      "agent_sessions": {
+        "sessions": 228,
+        "output_tokens": 11859613,
+        "total_tokens": 2758741204
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "39c665a29e8c",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "412e5a453c84",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "43a92c91cc6d",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "43e7410b8bed",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "4d1dac8f4b9d",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "5362cb03eb7c",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "5630f43c3099",
+      "display_tier": "public",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 8,
+        "active_days": 1,
+        "files": 87,
+        "loc_added": 11738,
+        "loc_removed": 909,
+        "loc_net": 10829
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": true,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 8,
+        "human_commits": 5,
+        "ai_coauthored_commits": 7,
+        "ai_coauthored_share": 0.875,
+        "agents": [
+          {
+            "author": "claude",
+            "commits": 3
+          }
+        ],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 2,
+        "delivery_artefacts": 1,
+        "quality_controls": 0
+      },
+      "label": "Build-Ledger",
+      "agent_sessions": {
+        "sessions": 23,
+        "output_tokens": 3955762,
+        "total_tokens": 345566020
+      },
+      "visibility": "public"
+    },
+    {
+      "id": "5b15b9e4d607",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "5fc48fcafe23",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
       "metrics": {
         "commits": 7,
-        "active_days": 0,
-        "files": 54,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "active_days": 1,
+        "files": 21,
+        "loc_added": 5497,
+        "loc_removed": 432,
+        "loc_net": 5065
       },
       "signals": {
         "has_tests": false,
@@ -244,274 +723,11 @@
         "excluded_bots": []
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 1,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "3499616b2e4c",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "393cf2057e7e",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "429efd98a53a",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 243,
-        "active_days": 0,
-        "files": 1893,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": true,
-        "has_ci": true,
-        "has_migrations": true
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 243,
-        "human_commits": 243,
-        "ai_coauthored_commits": 11,
-        "ai_coauthored_share": 0.045,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
         "workflow_infrastructure": 2,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
-    },
-    {
-      "id": "48a4e05de2df",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
       },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "4bd6fef6f7a1",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "56c102a824d3",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "5be0925ea8ed",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "5ce7dcf88d30",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
+      "visibility": "private"
     },
     {
       "id": "6169c2a726e8",
@@ -520,11 +736,11 @@
       "status": "active",
       "metrics": {
         "commits": 110,
-        "active_days": 0,
+        "active_days": 20,
         "files": 198,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "loc_added": 493373,
+        "loc_removed": 94123,
+        "loc_net": 399250
       },
       "signals": {
         "has_tests": true,
@@ -541,11 +757,51 @@
         "excluded_bots": []
       },
       "ai_artefacts": {
+        "workflow_infrastructure": 1,
+        "delivery_artefacts": 1,
+        "quality_controls": 0
+      },
+      "label": "suhail_final",
+      "agent_sessions": {
+        "sessions": 6,
+        "output_tokens": 65770,
+        "total_tokens": 11932962
+      },
+      "visibility": "public"
+    },
+    {
+      "id": "62fdbdb16640",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "suhail_final"
+      "visibility": "private"
     },
     {
       "id": "6b8eba9d8aca",
@@ -579,10 +835,11 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "meshic_final"
+      "label": "meshic_final",
+      "visibility": "public"
     },
     {
-      "id": "6e9cfc219b13",
+      "id": "6f52e42d18a0",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -612,10 +869,11 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "74c9103c1462",
+      "id": "72fcacf3c373",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -645,78 +903,144 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "830ed833912c",
+      "id": "74f35ccc22d8",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
       "metrics": {
-        "commits": 54,
+        "commits": 0,
         "active_days": 0,
-        "files": 1634,
+        "files": 0,
         "loc_added": 0,
         "loc_removed": 0,
         "loc_net": 0
       },
       "signals": {
         "has_tests": false,
-        "has_ci": true,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 54,
-        "human_commits": 51,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": [
-          {
-            "author": "Other bot",
-            "commits": 3
-          }
-        ]
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 1,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "8b0e67d348aa",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 26,
-        "active_days": 0,
-        "files": 2139,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": true,
         "has_ci": false,
         "has_migrations": false
       },
       "coauthorship": {
         "unit": "commit",
-        "total_commits": 26,
-        "human_commits": 26,
-        "ai_coauthored_commits": 26,
-        "ai_coauthored_share": 1.0,
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
         "agents": [],
         "excluded_bots": []
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 1,
+        "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "838b2f9139dd",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "83a570caf95b",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "8af11c98a5f2",
+      "display_tier": "aggregate_only",
+      "allowlisted": false,
+      "status": "active",
+      "metrics": {
+        "commits": 0,
+        "active_days": 0,
+        "files": 0,
+        "loc_added": 0,
+        "loc_removed": 0,
+        "loc_net": 0
+      },
+      "signals": {
+        "has_tests": false,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 0,
+        "delivery_artefacts": 0,
+        "quality_controls": 0
+      },
+      "visibility": "private"
     },
     {
       "id": "8b499e770c71",
@@ -725,11 +1049,11 @@
       "status": "active",
       "metrics": {
         "commits": 14,
-        "active_days": 0,
+        "active_days": 2,
         "files": 50,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "loc_added": 48020,
+        "loc_removed": 22935,
+        "loc_net": 25085
       },
       "signals": {
         "has_tests": true,
@@ -750,10 +1074,11 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "Bayut"
+      "label": "Bayut",
+      "visibility": "public"
     },
     {
-      "id": "9608959ca102",
+      "id": "9465fe42ec1b",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -783,50 +1108,18 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "96bfb0d2777f",
+      "id": "950ec6c2895f",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
       "metrics": {
-        "commits": 52,
+        "commits": 0,
         "active_days": 0,
-        "files": 4774,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": true,
-        "has_ci": true,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 52,
-        "human_commits": 52,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 1,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "97fc87447b59",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 4,
-        "active_days": 0,
-        "files": 23,
+        "files": 0,
         "loc_added": 0,
         "loc_removed": 0,
         "loc_net": 0
@@ -838,18 +1131,19 @@
       },
       "coauthorship": {
         "unit": "commit",
-        "total_commits": 4,
-        "human_commits": 4,
-        "ai_coauthored_commits": 4,
-        "ai_coauthored_share": 1.0,
+        "total_commits": 0,
+        "human_commits": 0,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
         "agents": [],
         "excluded_bots": []
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 1,
+        "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
       "id": "9906cecdcbfb",
@@ -883,106 +1177,8 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "index-rebalancing"
-    },
-    {
-      "id": "9c1a0928de5f",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "9d5290a5437d",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 15,
-        "active_days": 0,
-        "files": 1961,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": true,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 15,
-        "human_commits": 15,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "a3b993dbb71b",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
+      "label": "index-rebalancing",
+      "visibility": "public"
     },
     {
       "id": "a510476a9653",
@@ -1016,10 +1212,11 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "symphony-smoke-test"
+      "label": "symphony-smoke-test",
+      "visibility": "public"
     },
     {
-      "id": "a63782672794",
+      "id": "a6ef402523de",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1049,10 +1246,11 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "a971bd499e77",
+      "id": "b1e515336d00",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1082,10 +1280,11 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "af51b8f9c9d8",
+      "id": "b28314dbd799",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1115,43 +1314,11 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "b32c0518cb07",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 26,
-        "active_days": 0,
-        "files": 3055,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": true,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 26,
-        "human_commits": 26,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "b42835e96abe",
+      "id": "b477a4ea521d",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1181,10 +1348,11 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "b7c658a24846",
+      "id": "b96beba89cca",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1214,7 +1382,8 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
       "id": "bd931922df2b",
@@ -1248,43 +1417,11 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "googlemapsmall"
+      "label": "googlemapsmall",
+      "visibility": "public"
     },
     {
-      "id": "bf8f1a71a298",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 9,
-        "active_days": 0,
-        "files": 23,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": true,
-        "has_ci": true,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 9,
-        "human_commits": 9,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 1,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
-    },
-    {
-      "id": "c1c2b773e42b",
+      "id": "c9f6f9007149",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1314,7 +1451,8 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
       "id": "d3a82ac0592f",
@@ -1323,11 +1461,11 @@
       "status": "active",
       "metrics": {
         "commits": 18,
-        "active_days": 0,
-        "files": 307,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "active_days": 3,
+        "files": 297,
+        "loc_added": 69349,
+        "loc_removed": 1855,
+        "loc_net": 67494
       },
       "signals": {
         "has_tests": true,
@@ -1344,44 +1482,12 @@
         "excluded_bots": []
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 1,
+        "workflow_infrastructure": 2,
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "bmad-crewai"
-    },
-    {
-      "id": "dab75a59dac6",
-      "display_tier": "aggregate_only",
-      "allowlisted": false,
-      "status": "active",
-      "metrics": {
-        "commits": 0,
-        "active_days": 0,
-        "files": 0,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
-      },
-      "signals": {
-        "has_tests": false,
-        "has_ci": false,
-        "has_migrations": false
-      },
-      "coauthorship": {
-        "unit": "commit",
-        "total_commits": 0,
-        "human_commits": 0,
-        "ai_coauthored_commits": 0,
-        "ai_coauthored_share": 0.0,
-        "agents": [],
-        "excluded_bots": []
-      },
-      "ai_artefacts": {
-        "workflow_infrastructure": 0,
-        "delivery_artefacts": 0,
-        "quality_controls": 0
-      }
+      "label": "bmad-crewai",
+      "visibility": "public"
     },
     {
       "id": "e1a59933c7dd",
@@ -1415,17 +1521,18 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "brand_scraper"
+      "label": "brand_scraper",
+      "visibility": "public"
     },
     {
-      "id": "e57e06be6b11",
+      "id": "e71a3d0ec0d5",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
       "metrics": {
-        "commits": 4,
+        "commits": 0,
         "active_days": 0,
-        "files": 85,
+        "files": 0,
         "loc_added": 0,
         "loc_removed": 0,
         "loc_net": 0
@@ -1437,31 +1544,32 @@
       },
       "coauthorship": {
         "unit": "commit",
-        "total_commits": 4,
-        "human_commits": 4,
+        "total_commits": 0,
+        "human_commits": 0,
         "ai_coauthored_commits": 0,
         "ai_coauthored_share": 0.0,
         "agents": [],
         "excluded_bots": []
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 1,
+        "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "f11ff7036250",
+      "id": "e74122dbb797",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
       "metrics": {
-        "commits": 1495,
-        "active_days": 0,
-        "files": 5511,
-        "loc_added": 0,
-        "loc_removed": 0,
-        "loc_net": 0
+        "commits": 9,
+        "active_days": 1,
+        "files": 23,
+        "loc_added": 74228,
+        "loc_removed": 69747,
+        "loc_net": 4481
       },
       "signals": {
         "has_tests": true,
@@ -1470,31 +1578,22 @@
       },
       "coauthorship": {
         "unit": "commit",
-        "total_commits": 1495,
-        "human_commits": 1390,
-        "ai_coauthored_commits": 1236,
-        "ai_coauthored_share": 0.827,
-        "agents": [
-          {
-            "author": "Other agent",
-            "commits": 46
-          }
-        ],
-        "excluded_bots": [
-          {
-            "author": "Other bot",
-            "commits": 59
-          }
-        ]
+        "total_commits": 9,
+        "human_commits": 9,
+        "ai_coauthored_commits": 0,
+        "ai_coauthored_share": 0.0,
+        "agents": [],
+        "excluded_bots": []
       },
       "ai_artefacts": {
-        "workflow_infrastructure": 4,
-        "delivery_artefacts": 0,
+        "workflow_infrastructure": 2,
+        "delivery_artefacts": 1,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "f1b4fad29f3a",
+      "id": "f180c9e8ded7",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1524,10 +1623,11 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
     },
     {
-      "id": "f7239a4dec7e",
+      "id": "f43c7f1afd14",
       "display_tier": "aggregate_only",
       "allowlisted": false,
       "status": "active",
@@ -1557,7 +1657,44 @@
         "workflow_infrastructure": 0,
         "delivery_artefacts": 0,
         "quality_controls": 0
-      }
+      },
+      "visibility": "private"
+    },
+    {
+      "id": "fb14e16b85c6",
+      "display_tier": "public",
+      "allowlisted": true,
+      "status": "active",
+      "metrics": {
+        "commits": 26,
+        "active_days": 3,
+        "files": 2094,
+        "loc_added": 1016807,
+        "loc_removed": 471,
+        "loc_net": 1016336
+      },
+      "signals": {
+        "has_tests": true,
+        "has_ci": false,
+        "has_migrations": false
+      },
+      "coauthorship": {
+        "unit": "commit",
+        "total_commits": 26,
+        "human_commits": 26,
+        "ai_coauthored_commits": 26,
+        "ai_coauthored_share": 1.0,
+        "agents": [],
+        "excluded_bots": []
+      },
+      "ai_artefacts": {
+        "workflow_infrastructure": 3,
+        "delivery_artefacts": 1,
+        "quality_controls": 0
+      },
+      "label": "JEC Mapping",
+      "category": "Geospatial mapping",
+      "visibility": "private"
     },
     {
       "id": "fb83154e0feb",
@@ -1591,36 +1728,37 @@
         "delivery_artefacts": 0,
         "quality_controls": 0
       },
-      "label": "bmad-symphony"
+      "label": "bmad-symphony",
+      "visibility": "public"
     }
   ],
   "aggregates": {
     "repo_counts": {
-      "public": 12,
-      "private": 35,
+      "public": 19,
+      "private": 29,
       "archived": 0,
-      "active": 47
+      "active": 48
     },
     "languages": [
       {
         "name": "Python",
-        "share": 0.66
+        "share": 0.667
       },
       {
         "name": "HTML",
-        "share": 0.085
+        "share": 0.083
       },
       {
         "name": "Other",
-        "share": 0.085
+        "share": 0.083
       },
       {
         "name": "TypeScript",
-        "share": 0.085
+        "share": 0.083
       },
       {
         "name": "JavaScript",
-        "share": 0.064
+        "share": 0.062
       },
       {
         "name": "Groovy",
@@ -1628,36 +1766,118 @@
       }
     ],
     "totals": {
-      "commits": 2080,
-      "user_authored_commits": 1972,
-      "loc_net": 0
+      "commits": 2065,
+      "user_authored_commits": 1954,
+      "loc_net": 5974533
     },
     "coauthorship": {
       "unit": "commit",
-      "total_commits": 2080,
-      "human_commits": 1972,
-      "agent_authored_commits": 46,
-      "ai_coauthored_commits": 1277,
-      "ai_coauthored_share": 0.614,
+      "total_commits": 2065,
+      "human_commits": 1954,
+      "agent_authored_commits": 49,
+      "ai_coauthored_commits": 1257,
+      "ai_coauthored_share": 0.609,
       "agents": [
         {
-          "author": "Other agent",
-          "commits": 46
+          "author": "cursor[bot]",
+          "commits": 45
+        },
+        {
+          "author": "claude",
+          "commits": 3
+        },
+        {
+          "author": "Cursor Agent",
+          "commits": 1
         }
       ],
       "excluded_bots": [
         {
-          "author": "Other bot",
+          "author": "dependabot",
           "commits": 62
         }
       ]
     }
   },
   "agentic_practice": {
-    "available": false,
-    "cadence": {},
-    "model_mix": [],
-    "cache_hit_ratio": null,
+    "available": true,
+    "cadence": {
+      "sessions": 2351,
+      "claude_sessions": 1230,
+      "codex_sessions": 1121
+    },
+    "tokens": {
+      "output": 151667746,
+      "total": 27422520827
+    },
+    "model_mix": [
+      {
+        "model": "claude-opus-4-8",
+        "sessions": 487,
+        "share": 0.207
+      },
+      {
+        "model": "claude-sonnet-4-6",
+        "sessions": 412,
+        "share": 0.175
+      },
+      {
+        "model": "gpt-5.3-codex",
+        "sessions": 411,
+        "share": 0.175
+      },
+      {
+        "model": "gpt-5.4",
+        "sessions": 332,
+        "share": 0.141
+      },
+      {
+        "model": "claude-haiku-4-5-20251001",
+        "sessions": 214,
+        "share": 0.091
+      },
+      {
+        "model": "gpt-5.4-mini",
+        "sessions": 118,
+        "share": 0.05
+      },
+      {
+        "model": "gpt-5.1-codex-mini",
+        "sessions": 53,
+        "share": 0.023
+      },
+      {
+        "model": "gpt-5.2-codex",
+        "sessions": 51,
+        "share": 0.022
+      },
+      {
+        "model": "claude-opus-4-7",
+        "sessions": 41,
+        "share": 0.017
+      },
+      {
+        "model": "gpt-5.2",
+        "sessions": 40,
+        "share": 0.017
+      },
+      {
+        "model": "gpt-5.5",
+        "sessions": 38,
+        "share": 0.016
+      },
+      {
+        "model": "claude-fable-5",
+        "sessions": 12,
+        "share": 0.005
+      },
+      {
+        "model": "gpt-5.1-codex-max",
+        "sessions": 1,
+        "share": 0.0
+      }
+    ],
+    "cache_hit_ratio": 0.742,
     "cost": {
       "available": false,
       "total": null,
@@ -1680,15 +1900,782 @@
     "commit_trajectory": []
   },
   "activity": {
-    "available": false,
-    "monthly": [],
-    "heatmap": []
+    "available": true,
+    "monthly": [
+      {
+        "month": "2025-06",
+        "commits": 7,
+        "loc_net": 2445
+      },
+      {
+        "month": "2025-07",
+        "commits": 107,
+        "loc_net": 410815
+      },
+      {
+        "month": "2025-08",
+        "commits": 5,
+        "loc_net": 6971
+      },
+      {
+        "month": "2025-09",
+        "commits": 28,
+        "loc_net": 191451
+      },
+      {
+        "month": "2025-10",
+        "commits": 2,
+        "loc_net": 298
+      },
+      {
+        "month": "2025-11",
+        "commits": 20,
+        "loc_net": 144356
+      },
+      {
+        "month": "2025-12",
+        "commits": 103,
+        "loc_net": 1703464
+      },
+      {
+        "month": "2026-01",
+        "commits": 38,
+        "loc_net": 125806
+      },
+      {
+        "month": "2026-02",
+        "commits": 48,
+        "loc_net": -78756
+      },
+      {
+        "month": "2026-03",
+        "commits": 177,
+        "loc_net": 1143237
+      },
+      {
+        "month": "2026-04",
+        "commits": 517,
+        "loc_net": 1562738
+      },
+      {
+        "month": "2026-05",
+        "commits": 561,
+        "loc_net": 446813
+      },
+      {
+        "month": "2026-06",
+        "commits": 452,
+        "loc_net": 314895
+      }
+    ],
+    "heatmap": [
+      {
+        "date": "2025-06-16",
+        "commits": 1
+      },
+      {
+        "date": "2025-06-17",
+        "commits": 2
+      },
+      {
+        "date": "2025-06-18",
+        "commits": 2
+      },
+      {
+        "date": "2025-06-27",
+        "commits": 2
+      },
+      {
+        "date": "2025-07-01",
+        "commits": 1
+      },
+      {
+        "date": "2025-07-02",
+        "commits": 5
+      },
+      {
+        "date": "2025-07-04",
+        "commits": 7
+      },
+      {
+        "date": "2025-07-05",
+        "commits": 48
+      },
+      {
+        "date": "2025-07-06",
+        "commits": 8
+      },
+      {
+        "date": "2025-07-07",
+        "commits": 18
+      },
+      {
+        "date": "2025-07-08",
+        "commits": 3
+      },
+      {
+        "date": "2025-07-09",
+        "commits": 1
+      },
+      {
+        "date": "2025-07-10",
+        "commits": 1
+      },
+      {
+        "date": "2025-07-11",
+        "commits": 1
+      },
+      {
+        "date": "2025-07-14",
+        "commits": 2
+      },
+      {
+        "date": "2025-07-17",
+        "commits": 1
+      },
+      {
+        "date": "2025-07-18",
+        "commits": 11
+      },
+      {
+        "date": "2025-08-10",
+        "commits": 1
+      },
+      {
+        "date": "2025-08-11",
+        "commits": 1
+      },
+      {
+        "date": "2025-08-21",
+        "commits": 3
+      },
+      {
+        "date": "2025-09-02",
+        "commits": 7
+      },
+      {
+        "date": "2025-09-10",
+        "commits": 1
+      },
+      {
+        "date": "2025-09-12",
+        "commits": 1
+      },
+      {
+        "date": "2025-09-14",
+        "commits": 1
+      },
+      {
+        "date": "2025-09-17",
+        "commits": 7
+      },
+      {
+        "date": "2025-09-18",
+        "commits": 10
+      },
+      {
+        "date": "2025-09-20",
+        "commits": 1
+      },
+      {
+        "date": "2025-10-16",
+        "commits": 2
+      },
+      {
+        "date": "2025-11-20",
+        "commits": 9
+      },
+      {
+        "date": "2025-11-28",
+        "commits": 6
+      },
+      {
+        "date": "2025-11-29",
+        "commits": 3
+      },
+      {
+        "date": "2025-11-30",
+        "commits": 2
+      },
+      {
+        "date": "2025-12-01",
+        "commits": 3
+      },
+      {
+        "date": "2025-12-02",
+        "commits": 3
+      },
+      {
+        "date": "2025-12-03",
+        "commits": 3
+      },
+      {
+        "date": "2025-12-05",
+        "commits": 8
+      },
+      {
+        "date": "2025-12-06",
+        "commits": 4
+      },
+      {
+        "date": "2025-12-08",
+        "commits": 10
+      },
+      {
+        "date": "2025-12-09",
+        "commits": 10
+      },
+      {
+        "date": "2025-12-10",
+        "commits": 6
+      },
+      {
+        "date": "2025-12-11",
+        "commits": 5
+      },
+      {
+        "date": "2025-12-13",
+        "commits": 2
+      },
+      {
+        "date": "2025-12-14",
+        "commits": 16
+      },
+      {
+        "date": "2025-12-15",
+        "commits": 4
+      },
+      {
+        "date": "2025-12-16",
+        "commits": 4
+      },
+      {
+        "date": "2025-12-18",
+        "commits": 2
+      },
+      {
+        "date": "2025-12-19",
+        "commits": 1
+      },
+      {
+        "date": "2025-12-20",
+        "commits": 1
+      },
+      {
+        "date": "2025-12-22",
+        "commits": 2
+      },
+      {
+        "date": "2025-12-23",
+        "commits": 3
+      },
+      {
+        "date": "2025-12-24",
+        "commits": 4
+      },
+      {
+        "date": "2025-12-25",
+        "commits": 1
+      },
+      {
+        "date": "2025-12-26",
+        "commits": 7
+      },
+      {
+        "date": "2025-12-27",
+        "commits": 1
+      },
+      {
+        "date": "2025-12-29",
+        "commits": 3
+      },
+      {
+        "date": "2026-01-04",
+        "commits": 3
+      },
+      {
+        "date": "2026-01-06",
+        "commits": 2
+      },
+      {
+        "date": "2026-01-08",
+        "commits": 4
+      },
+      {
+        "date": "2026-01-09",
+        "commits": 4
+      },
+      {
+        "date": "2026-01-10",
+        "commits": 4
+      },
+      {
+        "date": "2026-01-11",
+        "commits": 3
+      },
+      {
+        "date": "2026-01-12",
+        "commits": 2
+      },
+      {
+        "date": "2026-01-14",
+        "commits": 2
+      },
+      {
+        "date": "2026-01-15",
+        "commits": 3
+      },
+      {
+        "date": "2026-01-16",
+        "commits": 3
+      },
+      {
+        "date": "2026-01-21",
+        "commits": 1
+      },
+      {
+        "date": "2026-01-23",
+        "commits": 1
+      },
+      {
+        "date": "2026-01-27",
+        "commits": 1
+      },
+      {
+        "date": "2026-01-28",
+        "commits": 1
+      },
+      {
+        "date": "2026-01-29",
+        "commits": 2
+      },
+      {
+        "date": "2026-01-30",
+        "commits": 1
+      },
+      {
+        "date": "2026-01-31",
+        "commits": 1
+      },
+      {
+        "date": "2026-02-02",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-03",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-04",
+        "commits": 1
+      },
+      {
+        "date": "2026-02-08",
+        "commits": 1
+      },
+      {
+        "date": "2026-02-09",
+        "commits": 1
+      },
+      {
+        "date": "2026-02-10",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-11",
+        "commits": 6
+      },
+      {
+        "date": "2026-02-12",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-15",
+        "commits": 3
+      },
+      {
+        "date": "2026-02-18",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-19",
+        "commits": 7
+      },
+      {
+        "date": "2026-02-20",
+        "commits": 3
+      },
+      {
+        "date": "2026-02-21",
+        "commits": 1
+      },
+      {
+        "date": "2026-02-22",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-23",
+        "commits": 3
+      },
+      {
+        "date": "2026-02-24",
+        "commits": 4
+      },
+      {
+        "date": "2026-02-25",
+        "commits": 2
+      },
+      {
+        "date": "2026-02-26",
+        "commits": 3
+      },
+      {
+        "date": "2026-02-28",
+        "commits": 1
+      },
+      {
+        "date": "2026-03-01",
+        "commits": 1
+      },
+      {
+        "date": "2026-03-03",
+        "commits": 10
+      },
+      {
+        "date": "2026-03-04",
+        "commits": 1
+      },
+      {
+        "date": "2026-03-05",
+        "commits": 3
+      },
+      {
+        "date": "2026-03-06",
+        "commits": 27
+      },
+      {
+        "date": "2026-03-07",
+        "commits": 26
+      },
+      {
+        "date": "2026-03-08",
+        "commits": 25
+      },
+      {
+        "date": "2026-03-10",
+        "commits": 6
+      },
+      {
+        "date": "2026-03-11",
+        "commits": 17
+      },
+      {
+        "date": "2026-03-12",
+        "commits": 12
+      },
+      {
+        "date": "2026-03-13",
+        "commits": 3
+      },
+      {
+        "date": "2026-03-16",
+        "commits": 16
+      },
+      {
+        "date": "2026-03-20",
+        "commits": 4
+      },
+      {
+        "date": "2026-03-21",
+        "commits": 26
+      },
+      {
+        "date": "2026-04-06",
+        "commits": 22
+      },
+      {
+        "date": "2026-04-07",
+        "commits": 3
+      },
+      {
+        "date": "2026-04-08",
+        "commits": 1
+      },
+      {
+        "date": "2026-04-17",
+        "commits": 9
+      },
+      {
+        "date": "2026-04-18",
+        "commits": 51
+      },
+      {
+        "date": "2026-04-19",
+        "commits": 38
+      },
+      {
+        "date": "2026-04-20",
+        "commits": 31
+      },
+      {
+        "date": "2026-04-21",
+        "commits": 18
+      },
+      {
+        "date": "2026-04-22",
+        "commits": 7
+      },
+      {
+        "date": "2026-04-23",
+        "commits": 14
+      },
+      {
+        "date": "2026-04-24",
+        "commits": 38
+      },
+      {
+        "date": "2026-04-25",
+        "commits": 67
+      },
+      {
+        "date": "2026-04-26",
+        "commits": 99
+      },
+      {
+        "date": "2026-04-27",
+        "commits": 35
+      },
+      {
+        "date": "2026-04-28",
+        "commits": 36
+      },
+      {
+        "date": "2026-04-29",
+        "commits": 31
+      },
+      {
+        "date": "2026-04-30",
+        "commits": 17
+      },
+      {
+        "date": "2026-05-01",
+        "commits": 1
+      },
+      {
+        "date": "2026-05-02",
+        "commits": 74
+      },
+      {
+        "date": "2026-05-03",
+        "commits": 28
+      },
+      {
+        "date": "2026-05-04",
+        "commits": 33
+      },
+      {
+        "date": "2026-05-05",
+        "commits": 44
+      },
+      {
+        "date": "2026-05-06",
+        "commits": 12
+      },
+      {
+        "date": "2026-05-07",
+        "commits": 15
+      },
+      {
+        "date": "2026-05-08",
+        "commits": 16
+      },
+      {
+        "date": "2026-05-09",
+        "commits": 20
+      },
+      {
+        "date": "2026-05-10",
+        "commits": 16
+      },
+      {
+        "date": "2026-05-11",
+        "commits": 31
+      },
+      {
+        "date": "2026-05-12",
+        "commits": 3
+      },
+      {
+        "date": "2026-05-13",
+        "commits": 10
+      },
+      {
+        "date": "2026-05-14",
+        "commits": 14
+      },
+      {
+        "date": "2026-05-15",
+        "commits": 13
+      },
+      {
+        "date": "2026-05-16",
+        "commits": 30
+      },
+      {
+        "date": "2026-05-17",
+        "commits": 14
+      },
+      {
+        "date": "2026-05-19",
+        "commits": 7
+      },
+      {
+        "date": "2026-05-20",
+        "commits": 29
+      },
+      {
+        "date": "2026-05-21",
+        "commits": 13
+      },
+      {
+        "date": "2026-05-22",
+        "commits": 20
+      },
+      {
+        "date": "2026-05-23",
+        "commits": 5
+      },
+      {
+        "date": "2026-05-24",
+        "commits": 28
+      },
+      {
+        "date": "2026-05-25",
+        "commits": 37
+      },
+      {
+        "date": "2026-05-26",
+        "commits": 7
+      },
+      {
+        "date": "2026-05-27",
+        "commits": 9
+      },
+      {
+        "date": "2026-05-28",
+        "commits": 17
+      },
+      {
+        "date": "2026-05-29",
+        "commits": 15
+      },
+      {
+        "date": "2026-06-01",
+        "commits": 1
+      },
+      {
+        "date": "2026-06-02",
+        "commits": 33
+      },
+      {
+        "date": "2026-06-03",
+        "commits": 14
+      },
+      {
+        "date": "2026-06-04",
+        "commits": 2
+      },
+      {
+        "date": "2026-06-05",
+        "commits": 12
+      },
+      {
+        "date": "2026-06-06",
+        "commits": 13
+      },
+      {
+        "date": "2026-06-07",
+        "commits": 5
+      },
+      {
+        "date": "2026-06-08",
+        "commits": 24
+      },
+      {
+        "date": "2026-06-09",
+        "commits": 9
+      },
+      {
+        "date": "2026-06-10",
+        "commits": 23
+      },
+      {
+        "date": "2026-06-11",
+        "commits": 19
+      },
+      {
+        "date": "2026-06-12",
+        "commits": 39
+      },
+      {
+        "date": "2026-06-13",
+        "commits": 83
+      },
+      {
+        "date": "2026-06-14",
+        "commits": 20
+      },
+      {
+        "date": "2026-06-15",
+        "commits": 14
+      },
+      {
+        "date": "2026-06-16",
+        "commits": 5
+      },
+      {
+        "date": "2026-06-17",
+        "commits": 20
+      },
+      {
+        "date": "2026-06-18",
+        "commits": 21
+      },
+      {
+        "date": "2026-06-19",
+        "commits": 18
+      },
+      {
+        "date": "2026-06-20",
+        "commits": 1
+      },
+      {
+        "date": "2026-06-21",
+        "commits": 40
+      },
+      {
+        "date": "2026-06-22",
+        "commits": 8
+      },
+      {
+        "date": "2026-06-23",
+        "commits": 10
+      },
+      {
+        "date": "2026-06-24",
+        "commits": 10
+      },
+      {
+        "date": "2026-06-25",
+        "commits": 8
+      }
+    ]
   },
   "exclusions": {
     "forks": 0,
-    "vendored": 0,
-    "generated": 0,
-    "lockfiles": 0,
+    "vendored": 2,
+    "generated": 22,
+    "lockfiles": 10,
     "minified": 0,
     "bot_commits": 62,
     "mirrors": 0

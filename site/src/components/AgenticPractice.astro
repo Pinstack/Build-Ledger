@@ -1,0 +1,54 @@
+---
+import type { Stats } from '../lib/ledger';
+import { int, pct, compact } from '../lib/format';
+const { stats } = Astro.props as { stats: Stats };
+const p = stats.practice;
+const claude = p.cadence?.claude_sessions ?? 0;
+const codex = p.cadence?.codex_sessions ?? 0;
+const mix = (p.model_mix ?? []).slice(0, 9);
+const maxm = Math.max(1, ...mix.map((m) => m.sessions));
+const vendor = (m: string) => (/gpt|codex|openai|o\d/i.test(m) ? 'codex' : 'claude');
+const hasClaude = (p.model_mix ?? []).some((m) => vendor(m.model) === 'claude');
+const hasCodex = (p.model_mix ?? []).some((m) => vendor(m.model) === 'codex');
+const summary = [hasClaude && 'Claude (Opus · Sonnet · Haiku)', hasCodex && 'Codex / GPT-5 family'].filter(Boolean).join('  ·  ');
+---
+<div class="card-grid">
+  <div class="card">
+    <p class="label">Agent sessions</p>
+    <div class="numeral md">{int(p.cadence?.sessions ?? 0)}</div>
+    <p class="foot"><b>{int(claude)}</b> Claude · <b>{int(codex)}</b> Codex</p>
+  </div>
+  <div class="card">
+    <p class="label">Tokens generated</p>
+    <div class="numeral md">{compact(p.tokens?.output ?? 0)}</div>
+    <p class="foot">output tokens across sessions</p>
+  </div>
+  <div class="card">
+    <p class="label">Tokens processed</p>
+    <div class="numeral md">{compact(p.tokens?.total ?? 0)}</div>
+    <p class="foot">including cache reads</p>
+  </div>
+  <div class="card">
+    <p class="label">Cache hit</p>
+    <div class="numeral md">{p.cache_hit_ratio != null ? pct(p.cache_hit_ratio) : '—'}</div>
+    <p class="foot">context reused, not re-sent</p>
+  </div>
+</div>
+
+<div class="mmix">
+  <p class="label">Model mix</p>
+  <p class="mmix-summary">{summary}</p>
+  <details class="mmix-detail">
+    <summary>View exact model counts</summary>
+    <div class="mmix-rows">
+      {mix.map((m) => (
+        <div class="mrow">
+          <span class="mname mono">{m.model}</span>
+          <span class="mtrack"><span class={`mfill ${vendor(m.model)}`} style={`width:${((m.sessions / maxm) * 100).toFixed(0)}%`}></span></span>
+          <span class="mval">{int(m.sessions)}</span>
+        </div>
+      ))}
+    </div>
+  </details>
+  <p class="arte-note">Aggregate session metadata from local Claude Code + Codex logs — counts and tokens only, never transcript text (AD-9). Dollar cost omitted (auditable-or-none).</p>
+</div>
