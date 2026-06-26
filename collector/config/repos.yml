@@ -7,14 +7,22 @@
 # v1 ships with an EMPTY Allowlist (AD-4): every private repo stays a Silhouette and every
 # repository's `allowlisted` is false. Adding an entry is a deliberate, reviewed act.
 
-allowlist: []          # EMPTY in v1. The only promotion path.
+# Reviewed promotions (2026-06-26): the builder's own product (Meshic family) and two repos
+# explicitly cleared for naming. Every OTHER private repo stays a Silhouette (client work).
+allowlist:
+  - Meshic
+  - meshic_v2
+  - meshic_v1
+  - meshic-platform
+  - JEC_Mapping
+  - Research_Hub
 
-# Optional per-repo overrides. An override to `redacted`/`public` takes effect ONLY if the repo is
-# already public OR present in `allowlist` above (a private repo cannot be promoted by an override
-# alone). Public repos may carry a friendly label/category here.
-overrides: {}
-  # Example (inactive unless the repo is public or allowlisted):
-  # meshic:
-  #   display_tier: public
-  #   label: Meshic
-  #   category: Real-estate intelligence platform
+# Per-repo overrides. A promotion to public takes effect only for an allowlisted (or already public)
+# repo. Public repos may carry a friendly label/category here.
+overrides:
+  Meshic:          { display_tier: public, label: Meshic, category: Real-estate intelligence platform }
+  meshic_v2:       { display_tier: public, label: Meshic v2, category: Real-estate intelligence platform }
+  meshic_v1:       { display_tier: public, label: Meshic v1, category: Real-estate intelligence platform }
+  meshic-platform: { display_tier: public, label: Meshic Platform, category: Real-estate intelligence platform }
+  JEC_Mapping:     { display_tier: public, label: JEC Mapping, category: Geospatial mapping }
+  Research_Hub:    { display_tier: public, label: Research Hub, category: Research tooling }
